@@ -2,8 +2,6 @@
 
 Our CS 484 final project.
 
-From: [How to setup Node.JS and React](https://www.section.io/engineering-education/how-to-setup-nodejs-express-for-react/)
-
 ## Build and Run
 
 ### Server
