@@ -11,12 +11,12 @@ export default function Register() {
 	const [name, setName] = useState("");
 
 	const registerNewUser = () => {
-		const details = {
+		const data = {
 			email: email,
 			password: pwd,
 			name: name
 		};
-		axios.post("/account/register", details)
+		axios.post("/account/register", data)
 			.then((res) => {
 				console.log(res);
 			}).catch((error) => {

@@ -11,16 +11,16 @@ export default function Login() {
 	const [pwd, setPwd] = useState("");
 
 	const login = () => {
-		const details = {
+		const data = {
 			email: email,
 			password: pwd
 		};
-		console.log(details);
-		axios.post("/account/login", details)
+		axios.post("/account/login", data)
 			.then((res) => {
 				console.log(res);
 			}).catch((error) => {
 			console.log(error);
+			console.log(error.body);
 		});
 	};
 
