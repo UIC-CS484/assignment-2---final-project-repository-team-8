@@ -1,15 +1,16 @@
-import React, {Component} from "react";
+import React from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { useHistory } from "react-router-dom";
 import "../css/login.css"
-import history from '../history';
 
 
-export default function login() {
+export default function Login() {
+
+    let history = useHistory();
 
     const registerBtn = () => {
-        history.push("./register")
-        window.location.reload()
+        history.push("./Register")
     }
 
     return (
