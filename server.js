@@ -4,9 +4,8 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const StatusCodes = require("http-status-codes").StatusCodes;
 
-
 const app = express();
-const port = parseInt(process.env.PORT, 10) || 8080 || 3000;
+const port = 8080;
 const saltRounds = 10;
 
 app.use(express.json());
