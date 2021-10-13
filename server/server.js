@@ -38,7 +38,7 @@ const error = {
 };
 
 app.post("/account/register", (req, res) => {
-	if (!validRegisterRequest(req.body)) {
+	if (!validRegistrationParameters(req.body.name, req.body.email, req.body.password)) {
 		res.status(StatusCodes.BAD_REQUEST).json({ "error": error.BAD_REQUEST });
 		return;
 	}
@@ -109,13 +109,15 @@ const PASSWORD_FORMAT = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
  *    	      - At least one uppercase, lowercase, and digit
  *    	      - At least 8 characters
  *
- * @param data the request's body
- * @returns {boolean} whether or not this request contains valid parameters
+ * @param name the user's registration name
+ * @param email the user's registration email
+ * @param password the user's registration password
+ * @returns {boolean} whether or this is a valid combination of registration parameters
  */
-function validRegisterRequest(data) {
-	const validParameters = !!data.email && !!data.password && !!data.name;
-	const validEmailFormat = EMAIL_FORMAT.test(data.email);
-	const validPasswordFormat = PASSWORD_FORMAT.test(data.password);
-	return validParameters && validEmailFormat && validPasswordFormat;
+function validRegistrationParameters(name, email, password) {
+	const parametersArePresent = !!name && !!email && !!password;
+	const emailIsValid = EMAIL_FORMAT.test(email);
+	const passwordIsValid = PASSWORD_FORMAT.test(password);
+	return parametersArePresent && emailIsValid && passwordIsValid;
 }
 
