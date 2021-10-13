@@ -74,34 +74,6 @@ app.post("/account/login", (req, res, next) => {
 		  });
 		}
 	})(req, res, next);
-
-	// if (!(req.body.email && req.body.password)) {
-	// 	res.status(StatusCodes.BAD_REQUEST).json({ "error": "Please send an email and password!" });
-	// 	return;
-	// }
-
-	// const params = [req.body.email];
-	// db.get(query.GET_ACCOUNT, params, function(err, row) {
-	// 	if (err) {
-	// 		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ "error": err.message });
-	// 		return console.error(err);
-	// 	}
-
-	// 	if (row) {
-	// 		bcrypt.compare(req.body.password, row.password, function(err, result) {
-	// 			if (result) {
-	// 				res.sendStatus(StatusCodes.OK);
-	// 			} else {
-	// 				res.status(StatusCodes.UNAUTHORIZED).json({ "Message": error.INCORRECT_PASSWORD });
-	// 			}
-	// 		});
-	// 	} else {
-	// 		res.status(StatusCodes.NOT_FOUND).json({
-	// 			"message": error.USER_NOT_FOUND
-	// 		});
-	// 	}
-	// });
-
 });
 
 app.get("/account", (req, res) => {
