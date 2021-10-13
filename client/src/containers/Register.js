@@ -27,12 +27,15 @@ export default function Register() {
 
 	return (
 		<div className="register">
-			<Link to={"/login"}>Login</Link>
-			<Form>
+			<Form onSubmit ={ev =>{ev.preventDefault()}}>
+				<div className="redirect">
+					<Link to={"/login"}>Login</Link>
+				</div>
 				<Form.Group className="mb-3" controlId="formBasicName">
 					<Form.Label>Name</Form.Label>
 					<Form.Control onChange={e => setName(e.target.value)} type="name" placeholder="Enter name" />
 				</Form.Group>
+
 				<Form.Group className="mb-3" controlId="formBasicEmail">
 					<Form.Label>Email address</Form.Label>
 					<Form.Control onChange={e => setEmail(e.target.value)} type="email" placeholder="Enter email" />

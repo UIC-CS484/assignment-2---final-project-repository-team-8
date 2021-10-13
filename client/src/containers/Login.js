@@ -26,8 +26,10 @@ export default function Login() {
 
 	return (
 		<div className="login">
-			<Link to={"/register"}>Register</Link>
-			<Form>
+			<Form onSubmit ={ev =>{ev.preventDefault()}}>
+				<div className="redirect">
+					<Link to={"/register"}>Register</Link>
+				</div>
 				<Form.Group className="mb-3" controlId="formBasicEmail">
 					<Form.Label>Email address</Form.Label>
 					<Form.Control onChange={e => setEmail(e.target.value)} type="email" placeholder="Enter email" />
@@ -38,10 +40,10 @@ export default function Login() {
 					<Form.Control onChange={e => setPwd(e.target.value)} type="password" placeholder="Password" />
 				</Form.Group>
 
-				<Button onClick={login} block size="lg" type="login">
+				<Button onClick={login} block size="lg" type="login" >
 					Login
 				</Button>
-
+				
 			</Form>
 		</div>
 	);

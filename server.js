@@ -1,8 +1,12 @@
 const db = require("./database.js");
 const query = require("./query");
 const express = require("express");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const StatusCodes = require("http-status-codes").StatusCodes;
+const passport = require("passport");
+const localStrategy = require("passport-local").Strategy;
 
 const app = express();
 const port = 8080;
@@ -10,6 +14,17 @@ const saltRounds = 10;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+	session({
+	  secret: "secretcode",
+	  resave: true,
+	  saveUninitialized: true,
+	})
+  );
+app.use(cookieParser("secretcode"));
+app.use(passport.initialize());
+app.use(passport.session());
+require("./passportConf")(passport);
 
 app.listen(port, () => {
 	console.log("Server running on port " + port);
@@ -47,34 +62,18 @@ app.post("/account/register", (req, res) => {
 
 });
 
-app.post("/account/login", (req, res) => {
-	if (!(req.body.email && req.body.password)) {
-		res.status(StatusCodes.BAD_REQUEST).json({ "error": "Please send an email and password!" });
-		return;
-	}
 
-	const params = [req.body.email];
-	db.get(query.GET_ACCOUNT, params, function(err, row) {
-		if (err) {
-			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ "error": err.message });
-			return console.error(err);
+app.post("/account/login", (req, res, next) => {
+	passport.authenticate("local", (err, user, info) => {
+		if (err) throw err;
+		if (!user) res.send("No User Exists");
+		else {
+		  req.logIn(user, (err) => {
+			if (err) throw err;
+			res.send("Successfully Authenticated");
+		  });
 		}
-
-		if (row) {
-			bcrypt.compare(req.body.password, row.password, function(err, result) {
-				if (result) {
-					res.sendStatus(StatusCodes.OK);
-				} else {
-					res.status(StatusCodes.UNAUTHORIZED).json({ "Message": error.INCORRECT_PASSWORD });
-				}
-			});
-		} else {
-			res.status(StatusCodes.NOT_FOUND).json({
-				"message": error.USER_NOT_FOUND
-			});
-		}
-	});
-
+	})(req, res, next);
 });
 
 app.get("/account", (req, res) => {
