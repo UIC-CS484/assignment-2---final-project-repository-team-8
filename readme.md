@@ -6,7 +6,7 @@ Our CS 484 final project.
 
 ### Server
 
-From root directory, run:
+From `/server` directory, run:
 
 ```
 $ npm install
