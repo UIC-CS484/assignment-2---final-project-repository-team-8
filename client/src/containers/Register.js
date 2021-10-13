@@ -28,7 +28,7 @@ export default function Register() {
 	return (
 		<div className="register">
 			<Link to={"/login"}>Login</Link>
-			<Form>
+			<Form onSubmit ={ev =>{ev.preventDefault()}}>
 				<Form.Group className="mb-3" controlId="formBasicName">
 					<Form.Label>Name</Form.Label>
 					<Form.Control onChange={e => setName(e.target.value)} type="name" placeholder="Enter name" />
