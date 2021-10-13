@@ -5,20 +5,20 @@ const localStrategy = require("passport-local").Strategy;
 
 module.exports = function (passport) {
 
-  console.log('* passport.js - setup');
-  passport.use(new localStrategy((email, password, done) => {
-    db.get(query.GET_ACCOUNT, email, function(err, row) {
-        if (err) throw err;
-        if (!row) return done(null, false, { message: 'Wrong credentials.' });
-        // let pass = db.get(query.GET_PASSWORD, email)
-        
-        if(bcrypt.compareSync(password, row.password)){
-          return done(null, row);
-        } else {
-          return done(null, false, { message: 'Wrong credentials..' });
-        }
-      });
-    })
+  passport.use(new localStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+  }, (email, password, done) => {
+      db.get(query.GET_ACCOUNT, email, function(err, row) {
+          if (err) throw err;
+          if (!row) return done(null, false);
+          if(bcrypt.compareSync(password, row.password)){
+            done(null, row);
+          } else {
+            done(null, false);
+          }
+        });
+      })
   );
 
   passport.serializeUser((user, done) => {

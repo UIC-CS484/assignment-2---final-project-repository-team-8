@@ -65,16 +65,12 @@ app.post("/account/register", (req, res) => {
 
 app.post("/account/login", (req, res, next) => {
 	passport.authenticate("local", (err, user, info) => {
-		console.log(err);
-      	console.log(user);
-      	console.log(info);
 		if (err) throw err;
 		if (!user) res.send("No User Exists");
 		else {
 		  req.logIn(user, (err) => {
 			if (err) throw err;
 			res.send("Successfully Authenticated");
-			console.log(req.user);
 		  });
 		}
 	})(req, res, next);
