@@ -38,7 +38,7 @@ const error = {
 };
 
 app.post("/account/register", (req, res) => {
-	if (!(req.body.email && req.body.password && req.body.name)) {
+	if (!validRegisterRequest(req.body)) {
 		res.status(StatusCodes.BAD_REQUEST).json({ "error": error.BAD_REQUEST });
 		return;
 	}
@@ -96,4 +96,26 @@ app.get("/account", (req, res) => {
 		}
 	});
 });
+
+const EMAIL_FORMAT = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const PASSWORD_FORMAT = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+
+/**
+ * Verifies that:
+ *    1. The request has valid parameters
+ *    2. The email is properly formatted
+ *    3. The password is strong & properly formatted
+ *    	 "Strong" meaning:
+ *    	      - At least one uppercase, lowercase, and digit
+ *    	      - At least 8 characters
+ *
+ * @param data the request's body
+ * @returns {boolean} whether or not this request contains valid parameters
+ */
+function validRegisterRequest(data) {
+	const validParameters = !!data.email && !!data.password && !!data.name;
+	const validEmailFormat = EMAIL_FORMAT.test(data.email);
+	const validPasswordFormat = PASSWORD_FORMAT.test(data.password);
+	return validParameters && validEmailFormat && validPasswordFormat;
+}
 
