@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const passport = require("passport");
-const localStrategy = require("passport-local").Strategy;
 
 const app = express();
 const port = 8080;
