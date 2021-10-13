@@ -16,11 +16,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
 	session({
-	  secret: "secretcode",
-	  resave: true,
-	  saveUninitialized: true,
+		secret: "secretcode",
+		resave: true,
+		saveUninitialized: true
 	})
-  );
+);
 app.use(cookieParser("secretcode"));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -68,10 +68,10 @@ app.post("/account/login", (req, res, next) => {
 		if (err) throw err;
 		if (!user) res.send("No User Exists");
 		else {
-		  req.logIn(user, (err) => {
-			if (err) throw err;
-			res.send("Successfully Authenticated");
-		  });
+			req.logIn(user, (err) => {
+				if (err) throw err;
+				res.send("Successfully Authenticated");
+			});
 		}
 	})(req, res, next);
 });
