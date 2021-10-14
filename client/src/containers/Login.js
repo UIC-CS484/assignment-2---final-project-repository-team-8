@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "../css/login.scss";
 import axios from "axios";
 
@@ -9,6 +9,7 @@ import axios from "axios";
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [pwd, setPwd] = useState("");
+	const history = useHistory();
 
 	const login = () => {
 		const data = {
@@ -17,7 +18,9 @@ export default function Login() {
 		};
 		axios.post("/account/login", data)
 			.then((res) => {
+				// TODO: Transition to landing page
 				console.log(res);
+				history.push("/home");
 			}).catch((error) => {
 			console.log(error);
 			console.log(error.body);
