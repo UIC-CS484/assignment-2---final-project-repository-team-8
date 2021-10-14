@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Link, useHistory } from "react-router-dom";
-import "../css/login.scss";
+import "./login.scss";
 import axios from "axios";
 
 
@@ -29,7 +29,9 @@ export default function Login() {
 
 	return (
 		<div className="login">
-			<Form onSubmit ={ev =>{ev.preventDefault()}}>
+			<Form onSubmit={ev => {
+				ev.preventDefault();
+			}}>
 				<div className="redirect">
 					<Link to={"/register"}>Register</Link>
 				</div>
@@ -43,10 +45,10 @@ export default function Login() {
 					<Form.Control onChange={e => setPwd(e.target.value)} type="password" placeholder="Password" />
 				</Form.Group>
 
-				<Button onClick={login} block size="lg" type="login" >
+				<Button onClick={login} block size="lg" type="login">
 					Login
 				</Button>
-				
+
 			</Form>
 		</div>
 	);

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
-import "../css/login.scss";
+import "./login.scss";
 import axios from "axios";
 
 export default function Register() {
@@ -27,7 +27,9 @@ export default function Register() {
 
 	return (
 		<div className="register">
-			<Form onSubmit ={ev =>{ev.preventDefault()}}>
+			<Form onSubmit={ev => {
+				ev.preventDefault();
+			}}>
 				<div className="redirect">
 					<Link to={"/login"}>Login</Link>
 				</div>
