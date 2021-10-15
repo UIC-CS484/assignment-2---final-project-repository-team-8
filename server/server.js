@@ -1,16 +1,16 @@
-const db = require("./database.js");
-const query = require("./query");
+var sqlite3 = require("sqlite3").verbose();
 const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
-const StatusCodes = require("http-status-codes").StatusCodes;
 const passport = require("passport");
+const StatusCodes = require("http-status-codes").StatusCodes;
+const db = require("./database.js");
 const validRegistrationParameters = require("./routes/registration");
-
-const app = express();
-const port = 8080;
+const query = require("./query");
+const app = express(); 
 const saltRounds = 10;
+const port = 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -98,4 +98,8 @@ app.get("/account", (req, res) => {
 	});
 });
 
+app.get('/test', async (req, res) => {
+	res.json({message: 'pass!'})
+})
 
+module.exports = app;
