@@ -38,7 +38,7 @@ const error = {
 	INCORRECT_PASSWORD: "Passwords do not match!"
 };
 
-app.post("/account/register", (req, res) => {
+app.post("/account/register", async (req, res) => {
 	if (!validRegistrationParameters(req.body.name, req.body.email, req.body.password)) {
 		res.status(StatusCodes.BAD_REQUEST).json({ "error": error.BAD_REQUEST });
 		return;
@@ -98,8 +98,10 @@ app.get("/account", (req, res) => {
 	});
 });
 
+const name = ["Farooq", "Matt"];
+
 app.get('/test', async (req, res) => {
-	res.json({message: 'pass!'})
+	return res.json(name)
 })
 
 module.exports = app;
