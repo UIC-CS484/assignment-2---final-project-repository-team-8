@@ -38,6 +38,7 @@ const error = {
     INCORRECT_PASSWORD: "Passwords do not match!"
 };
 
+<<<<<<< HEAD
 app.post("/account/register", (req, res) => {
     const [ok, err] = validRegistrationParameters(req.body.name, req.body.email, req.body.password)
     if (!ok) {
@@ -45,6 +46,13 @@ app.post("/account/register", (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).json({"error": err});
         return;
     }
+=======
+app.post("/account/register", async (req, res) => {
+	if (!validRegistrationParameters(req.body.name, req.body.email, req.body.password)) {
+		res.status(StatusCodes.BAD_REQUEST).json({ "error": error.BAD_REQUEST });
+		return;
+	}
+>>>>>>> 0c1eeed (Jest Testing)
 
     bcrypt.hash(req.body.password, saltRounds, function (hashErr, hash) {
         if (hashErr) {
@@ -100,8 +108,10 @@ app.get("/account", (req, res) => {
     });
 });
 
+const name = ["Farooq", "Matt"];
+
 app.get('/test', async (req, res) => {
-	res.json({message: 'pass!'})
+	return res.json(name)
 })
 
 module.exports = app;
