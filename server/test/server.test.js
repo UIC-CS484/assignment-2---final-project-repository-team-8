@@ -1,14 +1,23 @@
 const app = require('../server');
 const supertest = require('supertest');
+var sqlite3 = require("sqlite3").verbose();
+const db = new sqlite3.Database('db-test.sqlite');
+const query = require("../query");
 
 beforeAll(() => {
   process.env.NODE_ENV = 'test';
+  seedDb(db);
 })
 
 afterAll(done => {
+    db.run('DROP TABLE user');
+    db.close();
     done();
 });
 
+const seedDb = db => {
+  db.run('CREATE TABLE IF NOT EXISTS user (email text PRIMARY KEY UNIQUE, password text, name text, CONSTRAINT email_unique UNIQUE (email))');
+}
 
 describe("GET / ", () => {
   test("It should return names", async () => {
@@ -18,8 +27,8 @@ describe("GET / ", () => {
   });
 });
 
-describe("POST /account/register", () => {
-  test("It responds with the newly created user", async () => {
+describe("POST test for register and login", () => {
+  test("Create a new user", async () => {
     const newUser = await supertest(app)
       .post("/account/register")
       .send({
@@ -32,4 +41,15 @@ describe("POST /account/register", () => {
   });
 });
 
+describe("POST /account/login", () => {
+  test("Check for login credentials", async () => {
+    const newUser = await supertest(app)
+      .post("/account/login")
+      .send({
+        email:'yo@farooq.com', 
+        password: 'Farooq123!'
+      });
 
+    expect(newUser.text).toEqual("No User Exists");
+  });
+});
