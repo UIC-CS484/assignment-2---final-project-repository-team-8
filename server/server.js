@@ -39,6 +39,7 @@ const error = {
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 app.post("/account/register", (req, res) => {
     const [ok, err] = validRegistrationParameters(req.body.name, req.body.email, req.body.password)
     if (!ok) {
@@ -47,6 +48,8 @@ app.post("/account/register", (req, res) => {
         return;
     }
 =======
+=======
+>>>>>>> 0c1eeedf79d40d92ed0897217d1fefc4612c4228
 app.post("/account/register", async (req, res) => {
 	if (!validRegistrationParameters(req.body.name, req.body.email, req.body.password)) {
 		res.status(StatusCodes.BAD_REQUEST).json({ "error": error.BAD_REQUEST });
