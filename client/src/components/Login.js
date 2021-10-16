@@ -17,7 +17,7 @@ export default function Login() {
 			ToastsStore.error("Please provide an email");
 			return;
 		} else if (pwd === "") {
-			ToastsStore.error("Please provide an password");
+			ToastsStore.error("Please provide a password");
 			return;
 		}
 
