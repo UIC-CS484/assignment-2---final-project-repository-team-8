@@ -1,6 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
-// race condition: bad!
-const dbname = process.env.NODE_ENV === "test" ? "db" : "db-test";
+const dbname = process.env.NODE_ENV === "test" ? "db-test.sqlite" : "db.sqlite";
 
 let db = new sqlite3.Database(dbname, (err) => {
 	if (err) {
@@ -19,4 +18,3 @@ let db = new sqlite3.Database(dbname, (err) => {
 });
 
 module.exports.db = db;
-module.exports.dbname = dbname;

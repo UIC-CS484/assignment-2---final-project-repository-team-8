@@ -3,22 +3,17 @@ const msg = require("../server").msg;
 const routes = require("../server").routes;
 const supertest = require("supertest");
 const StatusCodes = require("http-status-codes").StatusCodes;
-const sqlite3 = require("sqlite3").verbose();
-const dbname = require("../database.js").dbname;
-const dbFile = dbname + ".sqlite";
-const db = new sqlite3.Database(dbFile);
+const db = require("../database.js").db;
 
 const [name, email, password] = ["Farooq", "test@farooq.com", "Farooq123!"];
 
 beforeAll(() => {
-	process.env.NODE_ENV = "test";
 	seedDb(db);
 });
 
 afterAll(done => {
 	db.run("DROP TABLE user");
 	db.close();
-	// force remove `dbFile` after tests!
 	done();
 });
 
@@ -27,7 +22,7 @@ const seedDb = db => {
 };
 
 describe("POST test for register and login", () => {
-	test("Create a new user", async () => {
+	test("Create a new user and login", async () => {
 		const register = await supertest(app)
 			.post(routes.REGISTER)
 			.send({
