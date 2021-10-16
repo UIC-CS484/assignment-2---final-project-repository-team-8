@@ -30,62 +30,72 @@ app.listen(port, () => {
 	console.log("Server running on port " + port);
 });
 
-const error = {
+const msg = {
 	BAD_REQUEST: "Please send a properly-formed request!",
 	UNEXPECTED_ERROR: "Unexpected error. Please try again!",
 	USER_NOT_FOUND: "User not found...",
 	EMAIL_ALREADY_EXISTS: "Email already exists!",
-	INCORRECT_PASSWORD: "Passwords do not match!"
+	INCORRECT_PASSWORD: "Passwords do not match!",
+	REGISTRATION_FAILED: "Unable to register user. Please try again!",
+	REGISTRATION_SUCCEEDED: "Successfully registered the account!",
+	LOGIN_FAILED: "Login failed!",
+	LOGIN_SUCCEEDED: "Successfully authenticated the login!"
 };
 
-app.post("/account/register", async (req, res) => {
+const routes = {
+	REGISTER: "/account/register",
+	LOGIN: "/account/login",
+	ACCOUNT: "/account"
+};
+
+app.post(routes.REGISTER, async (req, res) => {
 	const [ok, err] = validRegistrationParameters(req.body.name, req.body.email, req.body.password);
 	if (!ok) {
 		console.log(err);
-		res.status(StatusCodes.BAD_REQUEST).json({ "error": err });
+		res.status(StatusCodes.BAD_REQUEST).json({ error: err });
 		return;
 	}
 
 	bcrypt.hash(req.body.password, saltRounds, function(hashErr, hash) {
 		if (hashErr) {
-			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ "message": "Unable to register user. Please try again!" });
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: msg.REGISTRATION_FAILED });
 			return;
 		}
 
 		const params = [req.body.name, req.body.email, hash];
 		db.run(query.INSERT_ACCOUNT, params, (dbErr, row) => {
 			if (dbErr) {
-				res.status(StatusCodes.CONFLICT).json({ "error": error.EMAIL_ALREADY_EXISTS });
+				res.status(StatusCodes.CONFLICT).json({ error: msg.EMAIL_ALREADY_EXISTS });
 			} else {
-				res.sendStatus(StatusCodes.OK);
+				res.status(StatusCodes.OK).json({ message: msg.REGISTRATION_SUCCEEDED });
 			}
 		});
 	});
 });
 
 
-app.post("/account/login", async (req, res, next) => {
+app.post(routes.LOGIN, async (req, res, next) => {
 	passport.authenticate("local", (err, user, info) => {
-		if (err) throw err;
-		if (!user) res.send("No User Exists");
+		if (err) res.status(StatusCodes.UNAUTHORIZED).json({ error: msg.LOGIN_FAILED });
+		if (!user) res.status(StatusCodes.NOT_FOUND).json({ error: msg.USER_NOT_FOUND });
 		else {
 			req.logIn(user, (err) => {
-				if (err) throw err;
-				res.send("Successfully Authenticated");
+				if (err) res.status(StatusCodes.UNAUTHORIZED).json({ error: msg.LOGIN_FAILED });
+				res.status(StatusCodes.OK).json({ message: msg.LOGIN_SUCCEEDED });
 			});
 		}
 	})(req, res, next);
 });
 
-app.get("/account", (req, res) => {
+app.get(routes.ACCOUNT, (req, res) => {
 	if (!req.query.email) {
-		res.status(StatusCodes.BAD_REQUEST).json({ "error": error.BAD_REQUEST });
+		res.status(StatusCodes.BAD_REQUEST).json({ error: msg.BAD_REQUEST });
 	}
 
 	const params = [req.query.email];
 	db.get(query.GET_ACCOUNT, params, function(err, row) {
 		if (err) {
-			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ "error": err.message });
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
 			return console.error(err);
 		}
 
@@ -93,10 +103,12 @@ app.get("/account", (req, res) => {
 			res.status(StatusCodes.OK).json(row);
 		} else {
 			res.status(StatusCodes.NOT_FOUND).json({
-				"message": error.USER_NOT_FOUND
+				error: msg.USER_NOT_FOUND
 			});
 		}
 	});
 });
 
-module.exports = app;
+module.exports.app = app;
+module.exports.msg = msg;
+module.exports.routes = routes;

@@ -1,5 +1,8 @@
-const app = require("../server");
+const app = require("../server").app;
+const msg = require("../server").msg;
+const routes = require("../server").routes;
 const supertest = require("supertest");
+const StatusCodes = require("http-status-codes").StatusCodes;
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("db-test.sqlite");
 
@@ -18,29 +21,33 @@ const seedDb = db => {
 	db.run("CREATE TABLE IF NOT EXISTS user (email text PRIMARY KEY UNIQUE, password text, name text, CONSTRAINT email_unique UNIQUE (email))");
 };
 
+const [name, email, password] = ["Farooq", "test@farooq.com", "Farooq123!"];
+
 describe("POST test for register and login", () => {
 	test("Create a new user", async () => {
 		const newUser = await supertest(app)
-			.post("/account/register")
+			.post(routes.REGISTER)
 			.send({
-				email: "test@farooq.com",
-				password: "Farooq123!",
-				name: "Farooq"
+				email: email,
+				password: password,
+				name: name
 			});
 
-		expect(newUser.statusCode).toEqual(200);
+		expect(newUser.statusCode).toEqual(StatusCodes.OK);
+		expect(newUser.body.message).toEqual(msg.REGISTRATION_SUCCEEDED);
 	});
 });
 
 describe("POST /account/login", () => {
-	test("Check for login credentials", async () => {
+	test("Check for invalid login credentials", async () => {
 		const newUser = await supertest(app)
-			.post("/account/login")
+			.post(routes.LOGIN)
 			.send({
 				email: "yo@farooq.com",
 				password: "Farooq123!"
 			});
 
-		expect(newUser.text).toEqual("No User Exists");
+		expect(newUser.statusCode).toEqual(StatusCodes.NOT_FOUND);
+		expect(newUser.body.error).toEqual(msg.USER_NOT_FOUND);
 	});
 });
