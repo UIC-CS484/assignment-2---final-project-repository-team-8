@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./login.scss";
 import axios from "axios";
 
@@ -9,6 +9,7 @@ export default function Register() {
 	const [email, setEmail] = useState("");
 	const [pwd, setPwd] = useState("");
 	const [name, setName] = useState("");
+	const history = useHistory();
 
 	const registerNewUser = () => {
 		const data = {
@@ -19,6 +20,7 @@ export default function Register() {
 		axios.post("/account/register", data)
 			.then((res) => {
 				console.log(res);
+				history.push("/login");
 			}).catch((error) => {
 			console.log(error);
 		});
