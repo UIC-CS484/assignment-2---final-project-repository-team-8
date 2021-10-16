@@ -10,7 +10,7 @@ const validRegistrationParameters = require("./routes/registration");
 const query = require("./query");
 const app = express(); 
 const saltRounds = 10;
-const port = 8080;
+const port = process.env.NODE_ENV === 'test' ? 8081 : 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -38,24 +38,13 @@ const error = {
     INCORRECT_PASSWORD: "Passwords do not match!"
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-app.post("/account/register", (req, res) => {
+app.post("/account/register", async (req, res) => {
     const [ok, err] = validRegistrationParameters(req.body.name, req.body.email, req.body.password)
     if (!ok) {
         console.log(err)
         res.status(StatusCodes.BAD_REQUEST).json({"error": err});
         return;
     }
-=======
-=======
->>>>>>> 0c1eeedf79d40d92ed0897217d1fefc4612c4228
-app.post("/account/register", async (req, res) => {
-	if (!validRegistrationParameters(req.body.name, req.body.email, req.body.password)) {
-		res.status(StatusCodes.BAD_REQUEST).json({ "error": error.BAD_REQUEST });
-		return;
-	}
->>>>>>> 0c1eeed (Jest Testing)
 
     bcrypt.hash(req.body.password, saltRounds, function (hashErr, hash) {
         if (hashErr) {
@@ -72,7 +61,6 @@ app.post("/account/register", async (req, res) => {
             }
         });
     });
-
 });
 
 

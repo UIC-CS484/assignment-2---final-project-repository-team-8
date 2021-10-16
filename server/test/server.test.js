@@ -1,6 +1,10 @@
 const app = require('../server');
 const supertest = require('supertest');
 
+beforeAll(() => {
+  process.env.NODE_ENV = 'test';
+})
+
 afterAll(done => {
     done();
 });
@@ -11,7 +15,6 @@ describe("GET / ", () => {
     const response = await supertest(app).get("/test");
     expect(response.body).toEqual(["Farooq", "Matt"]);
     expect(response.statusCode).toBe(200);
-    done();
   });
 });
 
@@ -20,15 +23,12 @@ describe("POST /account/register", () => {
     const newUser = await supertest(app)
       .post("/account/register")
       .send({
-        name: 'Farooq', 
-        email:'farooq@uic.edu', 
-        password: 'ilovecSDDoding212321!23131212312@#'
+        email:'test@farooq.com', 
+        password: 'Farooq123!',
+        name: 'Farooq'
       });
 
-    expect(newUser.statusCode).toBe(200);
-
-    // const response = await request(app).get("/students");
-    // expect(response.body.length).toBe(3);
+    expect(newUser.statusCode).toEqual(200);
   });
 });
 
