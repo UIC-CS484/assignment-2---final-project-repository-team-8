@@ -1,4 +1,3 @@
-const sqlite3 = require("sqlite3").verbose();
 const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
@@ -10,8 +9,7 @@ const query = require("./query");
 const app = express();
 const saltRounds = 10;
 const port = process.env.NODE_ENV === "test" ? 8081 : 8080;
-const db = process.env.NODE_ENV === "test" ? new sqlite3.Database("db-test.sqlite") : require("./database.js");
-
+const db = require("./database.js").db;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
