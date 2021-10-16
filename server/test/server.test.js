@@ -7,19 +7,11 @@ const db = require("../database.js").db;
 
 const [name, email, password] = ["Farooq", "test@farooq.com", "Farooq123!"];
 
-beforeAll(() => {
-	seedDb(db);
-});
-
 afterAll(done => {
 	db.run("DROP TABLE user");
 	db.close();
 	done();
 });
-
-const seedDb = db => {
-	db.run("CREATE TABLE IF NOT EXISTS user (email text PRIMARY KEY UNIQUE, password text, name text, CONSTRAINT email_unique UNIQUE (email))");
-};
 
 describe("POST test for register and login", () => {
 	test("Create a new user and login", async () => {
