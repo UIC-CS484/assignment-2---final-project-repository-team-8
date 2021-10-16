@@ -10,7 +10,7 @@ const query = require("./query");
 const app = express();
 const saltRounds = 10;
 const port = process.env.NODE_ENV === "test" ? 8081 : 8080;
-let db = process.env.NODE_ENV === "test" ? new sqlite3.Database("db-test.sqlite") : require("./database.js");
+const db = process.env.NODE_ENV === "test" ? new sqlite3.Database("db-test.sqlite") : require("./database.js");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -97,12 +97,6 @@ app.get("/account", (req, res) => {
 			});
 		}
 	});
-});
-
-const name = ["Farooq", "Matt"];
-
-app.get("/test", async (req, res) => {
-	return res.json(name);
 });
 
 module.exports = app;
