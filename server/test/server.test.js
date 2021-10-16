@@ -2,7 +2,6 @@ const app = require('../server');
 const supertest = require('supertest');
 var sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database('db-test.sqlite');
-const query = require("../query");
 
 beforeAll(() => {
   process.env.NODE_ENV = 'test';
