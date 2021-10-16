@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import { Link, useHistory } from "react-router-dom";
 import "./login.scss";
 import axios from "axios";
+import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
 
 export default function Register() {
 	const [email, setEmail] = useState("");
@@ -12,23 +13,35 @@ export default function Register() {
 	const history = useHistory();
 
 	const registerNewUser = () => {
+		if (email === "") {
+			ToastsStore.error("Please provide an email");
+			return
+		} else if (pwd === "") {
+			ToastsStore.error("Please provide an password");
+			return
+		} else if (name === "") {
+			ToastsStore.error("Please provide a name");
+			return
+		}
+
 		const data = {
 			email: email,
 			password: pwd,
 			name: name
 		};
+
 		axios.post("/account/register", data)
 			.then((res) => {
-				console.log(res);
 				history.push("/login");
 			}).catch((error) => {
-			console.log(error);
+			ToastsStore.error(error.response.data.error);
 		});
 	};
 
 
 	return (
 		<div className="register">
+			<ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_CENTER} />
 			<Form onSubmit={ev => {
 				ev.preventDefault();
 			}}>

@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import { Link, useHistory } from "react-router-dom";
 import "./login.scss";
 import axios from "axios";
+import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
 
 
 export default function Login() {
@@ -12,23 +13,30 @@ export default function Login() {
 	const history = useHistory();
 
 	const login = () => {
+		if (email === "") {
+			ToastsStore.error("Please provide an email");
+			return;
+		} else if (pwd === "") {
+			ToastsStore.error("Please provide an password");
+			return;
+		}
+
 		const data = {
 			email: email,
 			password: pwd
 		};
+
 		axios.post("/account/login", data)
 			.then((res) => {
-				// TODO: Transition to landing page
-				console.log(res);
 				history.push("/home");
 			}).catch((error) => {
-			console.log(error);
-			console.log(error.body);
+			ToastsStore.error(error.response.data.error);
 		});
 	};
 
 	return (
 		<div className="login">
+			<ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_CENTER} />
 			<Form onSubmit={ev => {
 				ev.preventDefault();
 			}}>
