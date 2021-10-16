@@ -1,16 +1,16 @@
-const db = require("./database.js");
-const query = require("./query");
+var sqlite3 = require("sqlite3").verbose();
 const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
-const StatusCodes = require("http-status-codes").StatusCodes;
 const passport = require("passport");
+const StatusCodes = require("http-status-codes").StatusCodes;
 const validRegistrationParameters = require("./routes/registration");
-
-const app = express();
-const port = 8080;
+const query = require("./query");
+const app = express(); 
 const saltRounds = 10;
+const port = process.env.NODE_ENV === 'test' ? 8081 : 8080;
+let db = process.env.NODE_ENV === 'test' ? new sqlite3.Database('db-test.sqlite') : require("./database.js");
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -38,7 +38,7 @@ const error = {
     INCORRECT_PASSWORD: "Passwords do not match!"
 };
 
-app.post("/account/register", (req, res) => {
+app.post("/account/register", async (req, res) => {
     const [ok, err] = validRegistrationParameters(req.body.name, req.body.email, req.body.password)
     if (!ok) {
         console.log(err)
@@ -61,11 +61,10 @@ app.post("/account/register", (req, res) => {
             }
         });
     });
-
 });
 
 
-app.post("/account/login", (req, res, next) => {
+app.post("/account/login", async (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
         if (err) throw err;
         if (!user) res.send("No User Exists");
@@ -100,4 +99,10 @@ app.get("/account", (req, res) => {
     });
 });
 
+const name = ["Farooq", "Matt"];
 
+app.get('/test', async (req, res) => {
+	return res.json(name)
+})
+
+module.exports = app;
