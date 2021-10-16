@@ -71,7 +71,7 @@ app.post(routes.LOGIN, async (req, res, next) => {
 		} else if (err === errors.INCORRECT_PASSWORD) {
 			res.status(StatusCodes.UNAUTHORIZED).json({ error: messages.INCORRECT_PASSWORD });
 		} else if (err) {
-			res.status(StatusCodes.UNAUTHORIZED).json({ error: messages.LOGIN_FAILED });
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: messages.UNEXPECTED_ERROR });
 		} else if (!user) {
 			res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
 		} else {
