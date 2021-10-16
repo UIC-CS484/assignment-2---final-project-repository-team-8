@@ -5,12 +5,12 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const StatusCodes = require("http-status-codes").StatusCodes;
-const db = require("./database.js");
 const validRegistrationParameters = require("./routes/registration");
 const query = require("./query");
 const app = express(); 
 const saltRounds = 10;
 const port = process.env.NODE_ENV === 'test' ? 8081 : 8080;
+let db = process.env.NODE_ENV === 'test' ? new sqlite3.Database('db-test.sqlite') : require("./database.js");
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -64,7 +64,7 @@ app.post("/account/register", async (req, res) => {
 });
 
 
-app.post("/account/login", (req, res, next) => {
+app.post("/account/login", async (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
         if (err) throw err;
         if (!user) res.send("No User Exists");
