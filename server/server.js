@@ -6,6 +6,7 @@ const passport = require("passport");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const validRegistrationParameters = require("./routes/registration");
 const messages = require("./message").messages;
+const errors = require("./errors").errors;
 
 const query = require("./query");
 const app = express();
@@ -65,12 +66,21 @@ app.post(routes.REGISTER, async (req, res) => {
 
 app.post(routes.LOGIN, async (req, res, next) => {
 	passport.authenticate("local", (err, user, info) => {
-		if (err) res.status(StatusCodes.UNAUTHORIZED).json({ error: messages.LOGIN_FAILED });
-		if (!user) res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
-		else {
+		if (err === errors.USER_NOT_FOUND) {
+			res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
+		} else if (err === errors.INCORRECT_PASSWORD) {
+			res.status(StatusCodes.UNAUTHORIZED).json({ error: messages.INCORRECT_PASSWORD });
+		} else if (err) {
+			res.status(StatusCodes.UNAUTHORIZED).json({ error: messages.LOGIN_FAILED });
+		} else if (!user) {
+			res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
+		} else {
 			req.logIn(user, (err) => {
-				if (err) res.status(StatusCodes.UNAUTHORIZED).json({ error: messages.LOGIN_FAILED });
-				res.status(StatusCodes.OK).json({ message: messages.LOGIN_SUCCEEDED });
+				if (err) {
+					res.status(StatusCodes.UNAUTHORIZED).json({ error: messages.LOGIN_FAILED });
+				} else {
+					res.status(StatusCodes.OK).json({ message: messages.LOGIN_SUCCEEDED });
+				}
 			});
 		}
 	})(req, res, next);

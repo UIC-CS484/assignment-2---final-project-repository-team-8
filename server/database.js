@@ -1,4 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
+const query = require("./query");
 const dbname = process.env.NODE_ENV === "test" ? "db-test.sqlite" : "db.sqlite";
 
 let db = new sqlite3.Database(dbname, (err) => {
@@ -7,13 +8,7 @@ let db = new sqlite3.Database(dbname, (err) => {
 		throw err;
 	} else {
 		console.log("Connected to the SQLite database.");
-		db.run(`CREATE TABLE IF NOT EXISTS user (             
-            email text PRIMARY KEY UNIQUE, 
-            password text, 
-            name text,
-            CONSTRAINT email_unique UNIQUE (email)
-            )`
-		);
+		db.run(query.CREATE_USER_TABLE);
 	}
 });
 
