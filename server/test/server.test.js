@@ -1,5 +1,5 @@
 const app = require("../server").app;
-const msg = require("../server").msg;
+const messages = require("../message").messages;
 const routes = require("../server").routes;
 const supertest = require("supertest");
 const StatusCodes = require("http-status-codes").StatusCodes;
@@ -24,7 +24,7 @@ describe("POST test for register and login", () => {
 			});
 
 		expect(register.statusCode).toEqual(StatusCodes.OK);
-		expect(register.body.message).toEqual(msg.REGISTRATION_SUCCEEDED);
+		expect(register.body.message).toEqual(messages.REGISTRATION_SUCCEEDED);
 
 		const login = await supertest(app)
 			.post(routes.LOGIN)
@@ -33,7 +33,7 @@ describe("POST test for register and login", () => {
 				password: password
 			});
 
-		expect(login.body.message).toEqual(msg.LOGIN_SUCCEEDED);
+		expect(login.body.message).toEqual(messages.LOGIN_SUCCEEDED);
 		expect(login.statusCode).toEqual(StatusCodes.OK);
 	});
 });
@@ -48,6 +48,6 @@ describe("POST /account/login", () => {
 			});
 
 		expect(login.statusCode).toEqual(StatusCodes.NOT_FOUND);
-		expect(login.body.error).toEqual(msg.USER_NOT_FOUND);
+		expect(login.body.error).toEqual(messages.USER_NOT_FOUND);
 	});
 });

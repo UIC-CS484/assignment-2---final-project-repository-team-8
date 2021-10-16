@@ -1,3 +1,5 @@
+const messages = require("../message").messages;
+
 const EMAIL_FORMAT = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_FORMAT = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{5,}$/;
 
@@ -21,11 +23,11 @@ function validRegistrationParameters(name, email, password) {
 	const passwordIsValid = PASSWORD_FORMAT.test(password);
 
 	if (!parametersArePresent) {
-		return [false, "Please provide a name, email, and password"];
+		return [false, messages.BAD_REGISTRATION_PARAMETERS];
 	} else if (!emailIsValid) {
-		return [false, "Please provide a valid email"];
+		return [false, messages.BAD_EMAIL_FORMAT];
 	} else if (!passwordIsValid) {
-		return [false, "Please provide a valid password"];
+		return [false, messages.BAD_PASSWORD_FORMAT];
 	}
 
 	return [true, null];
