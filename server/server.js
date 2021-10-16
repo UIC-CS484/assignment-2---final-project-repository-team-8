@@ -39,10 +39,10 @@ const routes = {
 };
 
 app.post(routes.REGISTER, async (req, res) => {
-	const [ok, err] = validRegistrationParameters(req.body.name, req.body.email, req.body.password);
+	const [ok, reason] = validRegistrationParameters(req.body.name, req.body.email, req.body.password);
 	if (!ok) {
-		console.log(err);
-		res.status(StatusCodes.BAD_REQUEST).json({ error: err });
+		console.log(reason);
+		res.status(StatusCodes.BAD_REQUEST).json({ error: reason });
 		return;
 	}
 
