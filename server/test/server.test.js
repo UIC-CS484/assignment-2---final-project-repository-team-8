@@ -33,7 +33,6 @@ describe("POST test for register and login", () => {
 				password: password
 			});
 
-		console.log(login);
 		expect(login.body.message).toEqual(msg.LOGIN_SUCCEEDED);
 		expect(login.statusCode).toEqual(StatusCodes.OK);
 	});

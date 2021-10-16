@@ -37,7 +37,10 @@ const msg = {
 	REGISTRATION_FAILED: "Unable to register user. Please try again!",
 	REGISTRATION_SUCCEEDED: "Successfully registered the account!",
 	LOGIN_FAILED: "Login failed!",
-	LOGIN_SUCCEEDED: "Successfully authenticated the login!"
+	LOGIN_SUCCEEDED: "Successfully authenticated the login!",
+	BAD_PASSWORD_FORMAT: "Please provide a valid password",
+	BAD_EMAIL_FORMAT: "Please provide a valid email",
+	BAD_REGISTRATION_PARAMETERS: "Please provide a name, email, and password"
 };
 
 const routes = {
