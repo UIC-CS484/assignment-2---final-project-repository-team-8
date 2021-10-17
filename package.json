@@ -1,0 +1,20 @@
+{
+  "name": "assignment-2---final-project-repository-team-8",
+  "version": "1.0.0",
+  "description": "cs 484 final project",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd server && npm run deploy",
+    "test": "cd server && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UIC-CS484/assignment-2---final-project-repository-team-8.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UIC-CS484/assignment-2---final-project-repository-team-8/issues"
+  },
+  "homepage": "https://github.com/UIC-CS484/assignment-2---final-project-repository-team-8#readme"
+}

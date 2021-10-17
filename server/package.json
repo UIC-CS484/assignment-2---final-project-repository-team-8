@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "deploy": "npm install && cd ../client && npm install && npm run build && cd ../server && nodemon node server.js",
     "start": "nodemon node server.js",
     "test": "jest --watchAll --detectOpenHandles"
   },

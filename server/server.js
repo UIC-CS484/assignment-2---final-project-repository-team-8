@@ -2,6 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
+const path = require("path");
 const passport = require("passport");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const validRegistrationParameters = require("./routes/registration");
@@ -23,10 +24,14 @@ app.use(
 		saveUninitialized: true
 	})
 );
+
 app.use(cookieParser("secretcode"));
 app.use(passport.initialize());
 app.use(passport.session());
 require("./passportConf")(passport);
+
+app.use(express.static(path.resolve(__dirname, "../client/build")));
+
 
 app.listen(port, () => {
 	console.log("Server running on port " + port);

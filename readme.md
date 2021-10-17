@@ -5,41 +5,22 @@ Our CS 484 final project.
 ## Table of Contents
 
 - **[Build and Run](#build-and-run)**<br>
-    - [1. Run the Server](#1-run-the-server)
-    - [2. Run the Client](#2-run-the-client)
-    - [3. Use the application](#3-use-the-application)
 - **[Testing](#testing)**<br>
     - [Unit Testing](#unit-testing)
     - [End-to-End Testing](#end-to-end-testing)
+    - [Running the tests](#running-the-tests)
 - **[Team Members](#team-members)**<br>
 - **[Development Tools](#development-tools)**<br>
 
 ## Build and Run
 
-### 1. Run the Server
-
-From the `~/server` directory, run:
+From the root directory, run:
 
 ```
-$ npm install
 $ npm start
 ```
 
-### 2. Run the Client
-
-Client depends on server, be sure to set that up first!
-
-From the `~/client` directory, run:
-
-```
-$ npm install
-$ npm start
-```
-
-### 3. Use the application
-
-Once the client & server are running, you can navigate to [http://localhost:3000/](http://localhost:3000/) to use the
-application.
+Once the server is running, you can navigate to [http://localhost:8080/](http://localhost:8080/) to use the application.
 
 ## Testing
 
@@ -61,7 +42,7 @@ succeed. For example:
 
 ### Running the tests
 
-To run the tests, navigate to `~/server` and execute
+To run the tests, execute the following from the root directory:
 
 ```
 $ npm test

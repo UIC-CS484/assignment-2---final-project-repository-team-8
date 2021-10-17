@@ -5,3 +5,4 @@ node_modules
 .idea
 db.sqlite
 db-test.sqlite
+client/build
