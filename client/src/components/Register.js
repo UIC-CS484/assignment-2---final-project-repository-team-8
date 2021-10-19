@@ -5,32 +5,32 @@ import { Link, useHistory } from "react-router-dom";
 import "./login.scss";
 import axios from "axios";
 import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
+import {routes, errors} from "./Common";
 
 export default function Register() {
 	const [email, setEmail] = useState("");
 	const [pwd, setPwd] = useState("");
 	const [name, setName] = useState("");
 	const history = useHistory();
+	const data = {
+		email: email,
+		password: pwd,
+		name: name
+	};
 
 	const registerNewUser = () => {
 		if (email === "") {
-			ToastsStore.error("Please provide an email");
+			ToastsStore.error(errors.EMAIL);
 			return
 		} else if (pwd === "") {
-			ToastsStore.error("Please provide an password");
+			ToastsStore.error(errors.PASSWORD);
 			return
 		} else if (name === "") {
-			ToastsStore.error("Please provide a name");
+			ToastsStore.error(errors.NAME);
 			return
 		}
 
-		const data = {
-			email: email,
-			password: pwd,
-			name: name
-		};
-
-		axios.post("/account/register", data)
+		axios.post(routes.REGISTER, data)
 			.then((res) => {
 				history.push("/login");
 			}).catch((error) => {

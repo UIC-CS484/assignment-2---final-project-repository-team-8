@@ -5,28 +5,27 @@ import { Link, useHistory } from "react-router-dom";
 import "./login.scss";
 import axios from "axios";
 import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
-
+import {routes, errors} from "./Common";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [pwd, setPwd] = useState("");
 	const history = useHistory();
+	const data = {
+		email: email,
+		password: pwd
+	};
 
 	const login = () => {
 		if (email === "") {
-			ToastsStore.error("Please provide an email");
+			ToastsStore.error(errors.EMAIL);
 			return;
 		} else if (pwd === "") {
-			ToastsStore.error("Please provide a password");
+			ToastsStore.error(errors.PASSWORD);
 			return;
 		}
 
-		const data = {
-			email: email,
-			password: pwd
-		};
-
-		axios.post("/account/login", data)
+		axios.post(routes.LOGIN, data)
 			.then((res) => {
 				history.push("/home");
 			}).catch((error) => {
