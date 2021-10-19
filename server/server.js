@@ -6,10 +6,11 @@ const path = require("path");
 const passport = require("passport");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const validRegistrationParameters = require("./routes/registration");
-const messages = require("./message").messages;
-const errors = require("./errors").errors;
+// const messages = require("./message").messages;
+// const errors = require("./errors").errors;
+const {messages, errors, query, routes} = require("./common");
 
-const query = require("./query");
+// const query = require("./query");
 const app = express();
 const saltRounds = 10;
 const port = process.env.NODE_ENV === "test" ? 8081 : 8080;
@@ -36,12 +37,6 @@ app.use(express.static(path.resolve(__dirname, "../client/build")));
 app.listen(port, () => {
 	console.log("Server running on port " + port);
 });
-
-const routes = {
-	REGISTER: "/account/register",
-	LOGIN: "/account/login",
-	ACCOUNT: "/account"
-};
 
 app.post(routes.REGISTER, async (req, res) => {
 	const [ok, reason] = validRegistrationParameters(req.body.name, req.body.email, req.body.password);

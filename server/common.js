@@ -13,4 +13,26 @@ const messages = {
 	BAD_REGISTRATION_PARAMETERS: "Please provide a name, email, and password"
 };
 
+const errors = {
+	USER_NOT_FOUND: new Error(messages.USER_NOT_FOUND),
+	INCORRECT_PASSWORD: new Error(messages.INCORRECT_PASSWORD)
+};
+
+const query = {
+	GET_ACCOUNT: "SELECT * from user WHERE email = ?",
+	GET_EMAIL: "SELECT email from user WHERE email = ?",
+	GET_PASSWORD: "SELECT password from user WHERE email = ?",
+	INSERT_ACCOUNT: "INSERT INTO user (name, email, password) VALUES (?,?,?)",
+	CREATE_USER_TABLE: "CREATE TABLE IF NOT EXISTS user (email text PRIMARY KEY UNIQUE, password text, name text, CONSTRAINT email_unique UNIQUE (email))"
+};
+
+const routes = {
+	REGISTER: "/account/register",
+	LOGIN: "/account/login",
+	ACCOUNT: "/account"
+};
+
+module.exports.routes = routes;
+module.exports.query = query;
+module.exports.errors = errors;
 module.exports.messages = messages;
