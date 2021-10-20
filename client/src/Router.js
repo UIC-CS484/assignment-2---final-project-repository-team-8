@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import Login from "./Login";
-import Register from "./Register";
-import Home from "./Home";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Home from "./components/Home";
 
 
 class App extends Component {
