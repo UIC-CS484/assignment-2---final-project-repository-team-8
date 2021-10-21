@@ -1,5 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
-const query = require("./query");
+const {query} = require("./common");
 const dbname = process.env.NODE_ENV === "test" ? "db-test.sqlite" : "db.sqlite";
 
 let db = new sqlite3.Database(dbname, (err) => {

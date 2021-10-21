@@ -1,7 +1,5 @@
 const app = require("../server").app;
-const messages = require("../message").messages;
-const routes = require("../server").routes;
-const query = require("../query");
+const {messages, errors, query, routes} = require("../common");
 const supertest = require("supertest");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const db = require("../database.js").db;
