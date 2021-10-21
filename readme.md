@@ -14,13 +14,27 @@ Our CS 484 final project.
 
 ## Build and Run
 
-From the root directory, run:
+### Server
+
+From `/server` directory, run:
 
 ```
+$ npm install
 $ npm start
 ```
 
-Once the server is running, you can navigate to [http://localhost:8080/](http://localhost:8080/) to use the application.
+### Client
+
+Client depends on server, be sure to set that up first!
+
+From `/client` directory, run:
+
+```
+$ npm install
+$ npm start
+```
+
+Once the server is running, you can navigate to [http://localhost:3000/](http://localhost:3000/) to use the application.
 
 ## Testing
 

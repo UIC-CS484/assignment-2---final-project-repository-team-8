@@ -30,7 +30,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 require("./passportConf")(passport);
 
-app.use(express.static(path.resolve(__dirname, "../client/build")));
+// app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 
 app.listen(port, () => {
