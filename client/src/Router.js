@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
-
+import ProtectedRoute from "./components/ProtectedRoute";
 
 class App extends Component {
 
@@ -15,7 +15,7 @@ class App extends Component {
 				<Route exact path="/" component={Login} />
 				<Route path="/login" component={Login} />
 				<Route path="/register" component={Register} />
-				<Route path="/home" component={Home} />
+				<ProtectedRoute path="/home" component={Home} />
 			</Router>
 		);
 	}
