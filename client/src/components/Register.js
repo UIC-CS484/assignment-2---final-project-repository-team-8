@@ -12,11 +12,6 @@ export default function Register() {
 	const [pwd, setPwd] = useState("");
 	const [name, setName] = useState("");
 	const history = useHistory();
-	const data = {
-		email: email,
-		password: pwd,
-		name: name
-	};
 
 	const registerNewUser = () => {
 		if (email === "") {
@@ -29,6 +24,12 @@ export default function Register() {
 			ToastsStore.error(errors.NAME);
 			return
 		}
+
+		const data = {
+			email: email,
+			password: pwd,
+			name: name
+		};
 
 		axios.post(routes.REGISTER, data)
 			.then((res) => {

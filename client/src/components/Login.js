@@ -5,16 +5,13 @@ import { Link, useHistory } from "react-router-dom";
 import "./login.scss";
 import axios from "axios";
 import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
-import { routes, errors } from "./Common";
+import { errors, routes } from "./Common";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [pwd, setPwd] = useState("");
 	const history = useHistory();
-	const data = {
-		email: email,
-		password: pwd
-	};
+	// const [isAuth, setIsAuth] = useState();
 
 	const login = () => {
 		if (email === "") {
@@ -25,8 +22,15 @@ export default function Login() {
 			return;
 		}
 
+		const data = {
+			email: email,
+			password: pwd
+		};
+
 		axios.post(routes.LOGIN, data)
 			.then((res) => {
+				// setIsAuth(res.data);
+				localStorage.setItem('isAuth', res);
 				history.push("/home");
 			}).catch((error) => {
 			ToastsStore.error(error.response.data.error);
