@@ -6,13 +6,12 @@ import "./login.scss";
 import axios from "axios";
 import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
 import { errors, routes } from "./Common";
-import { session, setSession } from "../session";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [pwd, setPwd] = useState("");
 	const history = useHistory();
-
+	// const [isAuth, setIsAuth] = useState();
 
 	const login = () => {
 		if (email === "") {
@@ -30,7 +29,8 @@ export default function Login() {
 
 		axios.post(routes.LOGIN, data)
 			.then((res) => {
-				setSession("authenticated");
+				// setIsAuth(res.data);
+				localStorage.setItem('isAuth', res);
 				history.push("/home");
 			}).catch((error) => {
 			ToastsStore.error(error.response.data.error);

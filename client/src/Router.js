@@ -15,7 +15,7 @@ class App extends Component {
 				<Route exact path="/" component={Login} />
 				<Route path="/login" component={Login} />
 				<Route path="/register" component={Register} />
-				<ProtectedRoute path="/home" component={Home} />
+				<ProtectedRoute path="/home" component={Home}/>
 			</Router>
 		);
 	}

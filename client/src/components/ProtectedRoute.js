@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { Redirect, Route } from "react-router-dom";
-import { session } from "../session";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
 	return (
 		<Route {...rest}
 			   render={props => {
-				   if (session == "authenticated") {
+				   if (localStorage.getItem("isAuth")) {
 					   return <Component {...rest}{...props} />;
 				   } else {
 					   return < Redirect to={
