@@ -32,6 +32,9 @@ const routes = {
 	ACCOUNT: "/account"
 };
 
+const SECRET = "Hello, world!";
+
+module.exports.SECRET = SECRET;
 module.exports.routes = routes;
 module.exports.query = query;
 module.exports.errors = errors;

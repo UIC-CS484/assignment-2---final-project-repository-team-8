@@ -3,6 +3,9 @@ import "./login.scss";
 import { Link, useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
+import { constants } from "../Common";
+import { ToastsStore } from "react-toasts";
 
 
 export default function Home() {
@@ -15,7 +18,15 @@ export default function Home() {
 	};
 
 	const submitTweet = () => {
-		console.log(tweet);
+		const token = localStorage.getItem(constants.TOKEN);
+		// TODO: replace this with a post to /tweet, then remove /protected-hello
+		axios.get("/protected-hello", { headers: { "Authorization": `Bearer ${token}` } })
+			.then((res) => {
+				console.log(res);
+			}).catch((error) => {
+			console.log(error);
+			ToastsStore.error(error.response.data.error);
+		});
 	};
 
 	return (
