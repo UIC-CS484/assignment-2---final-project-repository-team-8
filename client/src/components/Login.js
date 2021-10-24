@@ -2,22 +2,21 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Link, useHistory } from "react-router-dom";
+import { constants, errors, routes } from "../Common";
 import "./login.scss";
 import axios from "axios";
 import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
-import { errors, routes } from "./Common";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [pwd, setPwd] = useState("");
 	const history = useHistory();
-	// const [isAuth, setIsAuth] = useState();
 
 	const login = () => {
-		if (email === "") {
+		if (email === constants.EMPTY) {
 			ToastsStore.error(errors.EMAIL);
 			return;
-		} else if (pwd === "") {
+		} else if (pwd === constants.EMPTY) {
 			ToastsStore.error(errors.PASSWORD);
 			return;
 		}
@@ -29,8 +28,7 @@ export default function Login() {
 
 		axios.post(routes.LOGIN, data)
 			.then((res) => {
-				// setIsAuth(res.data);
-				localStorage.setItem('isAuth', res);
+				localStorage.setItem(constants.TOKEN, res.data.token);
 				history.push("/home");
 			}).catch((error) => {
 			ToastsStore.error(error.response.data.error);

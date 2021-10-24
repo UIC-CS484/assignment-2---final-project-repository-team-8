@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 const db = require("./database.js").db;
-const {errors, query} = require("./common");
-
+const { errors, query, SECRET } = require("./common");
+const JwtStrategy = require("passport-jwt").Strategy,
+	ExtractJwt = require("passport-jwt").ExtractJwt;
 const localStrategy = require("passport-local").Strategy;
 
 module.exports = function(passport) {
@@ -24,6 +25,22 @@ module.exports = function(passport) {
 			});
 		})
 	);
+
+	let opts = {};
+	opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+	opts.secretOrKey = SECRET;
+	passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+		db.get(query.GET_ACCOUNT, jwt_payload.user, function(err, user) {
+			if (err) {
+				return done(err, false);
+			}
+			if (user) {
+				return done(null, user);
+			} else {
+				return done(null, false);
+			}
+		});
+	}));
 
 	passport.serializeUser((user, done) => {
 		done(null, user.email);

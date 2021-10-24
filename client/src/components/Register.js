@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import "./login.scss";
 import axios from "axios";
 import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
-import { routes, errors } from "./Common";
+import { constants, errors, routes } from "../Common";
 
 export default function Register() {
 	const [email, setEmail] = useState("");
@@ -14,15 +14,15 @@ export default function Register() {
 	const history = useHistory();
 
 	const registerNewUser = () => {
-		if (email === "") {
+		if (email === constants.EMPTY) {
 			ToastsStore.error(errors.EMAIL);
-			return
-		} else if (pwd === "") {
+			return;
+		} else if (pwd === constants.EMPTY) {
 			ToastsStore.error(errors.PASSWORD);
-			return
-		} else if (name === "") {
+			return;
+		} else if (name === constants.EMPTY) {
 			ToastsStore.error(errors.NAME);
-			return
+			return;
 		}
 
 		const data = {
