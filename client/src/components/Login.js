@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import "./login.scss";
 import axios from "axios";
 import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
-import { errors, routes } from "./Common";
+import { errors, routes } from "../Common";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ export default function Login() {
 		axios.post(routes.LOGIN, data)
 			.then((res) => {
 				// setIsAuth(res.data);
-				localStorage.setItem('isAuth', res);
+				localStorage.setItem("isAuth", res);
 				history.push("/home");
 			}).catch((error) => {
 			ToastsStore.error(error.response.data.error);
