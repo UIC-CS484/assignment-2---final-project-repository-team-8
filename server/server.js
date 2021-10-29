@@ -116,12 +116,19 @@ app.get(routes.ACCOUNT, (req, res) => {
 	});
 });
 
+app.post(routes.TWEET, async (req, res, next) => {
+	passport.authenticate("jwt", { session: false }, (err, user, info) => {
+		const email = user.email;
+		res.status(StatusCodes.OK).json({ msg: "Hello from /tweet!" });
+	})(req, res, next);
+});
 
 app.get("/protected-hello", passport.authenticate("jwt", { session: false }),
 	function(req, res) {
 		res.status(StatusCodes.OK).json({ message: "Hello World!" });
 	}
 );
+
 
 module.exports.app = app;
 module.exports.routes = routes;
