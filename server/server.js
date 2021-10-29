@@ -86,7 +86,6 @@ app.post(routes.LOGIN, async (req, res, next) => {
 					res.status(StatusCodes.UNAUTHORIZED).json({ error: messages.LOGIN_FAILED });
 				} else {
 					const token = jwt.sign({ user: user.email }, SECRET);
-					console.log(token);
 					res.status(StatusCodes.OK).json({ message: messages.LOGIN_SUCCEEDED, token, name: user.name });
 				}
 			});
@@ -141,8 +140,26 @@ app.get(routes.TWEETS_FROM_USER, async (req, res, next) => {
 			}
 
 			if (rows) {
-				console.log(rows);
 				res.status(StatusCodes.OK).json(rows);
+			} else {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+					error: messages.UNEXPECTED_ERROR
+				});
+			}
+		});
+	})(req, res, next);
+});
+
+app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
+	passport.authenticate("jwt", { session: false }, (err, user, info) => {
+		db.all(query.GET_ALL_TWEETS, [], function(err, rows) {
+			if (err) {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+				return console.error(err);
+			}
+
+			if (rows) {
+				res.status(StatusCodes.OK).json({ rows });
 			} else {
 				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 					error: messages.UNEXPECTED_ERROR

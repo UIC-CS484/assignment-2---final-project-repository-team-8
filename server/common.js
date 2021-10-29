@@ -24,6 +24,7 @@ const query = {
 	GET_ACCOUNT: "SELECT * from user WHERE email = ?",
 	GET_EMAIL: "SELECT email from user WHERE email = ?",
 	GET_TWEETS: "SELECT * from tweets WHERE email = ?",
+	GET_ALL_TWEETS: "SELECT * from tweets limit 25",
 	GET_PASSWORD: "SELECT password from user WHERE email = ?",
 	INSERT_ACCOUNT: "INSERT INTO user (name, email, password) VALUES (?,?,?)",
 	INSERT_TWEET: "INSERT INTO tweets (email, tweet, timestamp) VALUES (?,?,?)",
@@ -36,7 +37,8 @@ const routes = {
 	LOGIN: "/account/login",
 	ACCOUNT: "/account",
 	TWEET: "/tweet",
-	TWEETS_FROM_USER: "/tweets/:email"
+	TWEETS_FROM_USER: "/tweets/user/:email",
+	GET_ALL_TWEETS: "/tweets/all"
 };
 
 const SECRET = "Hello, world!";
