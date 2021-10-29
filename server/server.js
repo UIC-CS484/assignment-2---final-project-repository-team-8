@@ -119,7 +119,15 @@ app.get(routes.ACCOUNT, (req, res) => {
 app.post(routes.TWEET, async (req, res, next) => {
 	passport.authenticate("jwt", { session: false }, (err, user, info) => {
 		const email = user.email;
-		res.status(StatusCodes.OK).json({ msg: "Hello from /tweet!" });
+		const tweet = req.body.tweet;
+		const params = [email, tweet, new Date().getTime()];
+		db.run(query.INSERT_TWEET, params, (dbErr, row) => {
+			if (dbErr) {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: messages.TWEET_FAILURE });
+			} else {
+				res.status(StatusCodes.OK).json({ message: messages.TWEET_SUBMITTED });
+			}
+		});
 	})(req, res, next);
 });
 
