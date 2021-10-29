@@ -131,6 +131,27 @@ app.post(routes.TWEET, async (req, res, next) => {
 	})(req, res, next);
 });
 
+app.get(routes.TWEETS_FROM_USER, async (req, res, next) => {
+	passport.authenticate("jwt", { session: false }, (err, user, info) => {
+		const params = [req.params.email];
+		db.get(query.GET_TWEETS, params, function(err, row) {
+			if (err) {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+				return console.error(err);
+			}
+
+			if (row) {
+				console.log(row);
+				res.status(StatusCodes.OK).json(row);
+			} else {
+				res.status(StatusCodes.NOT_FOUND).json({
+					error: messages.USER_NOT_FOUND
+				});
+			}
+		});
+	})(req, res, next);
+});
+
 app.get("/protected-hello", passport.authenticate("jwt", { session: false }),
 	function(req, res) {
 		res.status(StatusCodes.OK).json({ message: "Hello World!" });
