@@ -13,6 +13,9 @@ export default function NavBar() {
 		<div className="redirect">
 			<Link to={"/home"}>Home</Link>
 		</div>
+		<div className="redirect">
+			<Link to={"/profile"}>Profile</Link>
+		</div>
 		<button onClick={handleLogout}>logout</button>
 
 	</div>;

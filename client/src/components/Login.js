@@ -28,6 +28,8 @@ export default function Login() {
 
 		axios.post(routes.LOGIN, data)
 			.then((res) => {
+				localStorage.setItem(constants.EMAIL, data.email);
+				localStorage.setItem(constants.NAME, res.data.name);
 				localStorage.setItem(constants.TOKEN, res.data.token);
 				history.push("/home");
 			}).catch((error) => {
