@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 import "./login.scss";
-import { Link, useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { constants } from "../Common";
 import { ToastsStore } from "react-toasts";
+import NavBar from "./NavBar";
 
 
 export default function Home() {
-	const history = useHistory();
 	const [tweet, setTweet] = useState("");
-
-	const handleLogout = () => {
-		localStorage.clear();
-		history.push("/login");
-	};
 
 	const submitTweet = () => {
 		const token = localStorage.getItem(constants.TOKEN);
@@ -31,15 +25,10 @@ export default function Home() {
 
 	return (
 		<div className="home">
-			Congrats! You logged in!!
-			<br />
-			<button onClick={handleLogout}>logout</button>
+			<NavBar />
 			<Form onSubmit={ev => {
 				ev.preventDefault();
 			}}>
-				<div className="redirect">
-					<Link to={"/login"}>Login</Link>
-				</div>
 
 				<Form.Group className="mb-3" controlId="formBasicPassword">
 					<Form.Label>Tweet</Form.Label>

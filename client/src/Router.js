@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Profile from "./components/Profile";
 
 class App extends Component {
 
@@ -15,7 +16,8 @@ class App extends Component {
 				<Route exact path="/" component={Login} />
 				<Route path="/login" component={Login} />
 				<Route path="/register" component={Register} />
-				<ProtectedRoute path="/home" component={Home}/>
+				<ProtectedRoute path="/home" component={Home} />
+				<ProtectedRoute path="/profile" component={Profile} />
 			</Router>
 		);
 	}

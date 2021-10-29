@@ -87,7 +87,7 @@ app.post(routes.LOGIN, async (req, res, next) => {
 				} else {
 					const token = jwt.sign({ user: user.email }, SECRET);
 					console.log(token);
-					res.status(StatusCodes.OK).json({ message: messages.LOGIN_SUCCEEDED, token });
+					res.status(StatusCodes.OK).json({ message: messages.LOGIN_SUCCEEDED, token, name: user.name });
 				}
 			});
 		}

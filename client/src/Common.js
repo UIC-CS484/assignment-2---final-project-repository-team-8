@@ -11,6 +11,8 @@ const errors = {
 };
 
 const constants = {
+	EMAIL: "email",
+	NAME: "name",
 	TOKEN: "token",
 	SECRET: "Hello, world!",
 	EMPTY: ""
