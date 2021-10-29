@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./login.scss";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
@@ -31,15 +31,10 @@ export default function Home() {
 
 	return (
 		<div className="home">
-			Congrats! You logged in!!
-			<br />
 			<button onClick={handleLogout}>logout</button>
 			<Form onSubmit={ev => {
 				ev.preventDefault();
 			}}>
-				<div className="redirect">
-					<Link to={"/login"}>Login</Link>
-				</div>
 
 				<Form.Group className="mb-3" controlId="formBasicPassword">
 					<Form.Label>Tweet</Form.Label>
