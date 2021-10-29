@@ -134,18 +134,18 @@ app.post(routes.TWEET, async (req, res, next) => {
 app.get(routes.TWEETS_FROM_USER, async (req, res, next) => {
 	passport.authenticate("jwt", { session: false }, (err, user, info) => {
 		const params = [req.params.email];
-		db.get(query.GET_TWEETS, params, function(err, row) {
+		db.all(query.GET_TWEETS, params, function(err, rows) {
 			if (err) {
 				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
 				return console.error(err);
 			}
 
-			if (row) {
-				console.log(row);
-				res.status(StatusCodes.OK).json(row);
+			if (rows) {
+				console.log(rows);
+				res.status(StatusCodes.OK).json(rows);
 			} else {
-				res.status(StatusCodes.NOT_FOUND).json({
-					error: messages.USER_NOT_FOUND
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+					error: messages.UNEXPECTED_ERROR
 				});
 			}
 		});
