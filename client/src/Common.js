@@ -1,7 +1,8 @@
 const routes = {
 	REGISTER: "/account/register",
 	LOGIN: "/account/login",
-	ACCOUNT: "/account"
+	ACCOUNT: "/account",
+	TWEET: "/tweet"
 };
 
 const errors = {
