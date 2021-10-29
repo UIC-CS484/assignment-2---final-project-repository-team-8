@@ -37,6 +37,17 @@ export default function Home() {
 		});
 	};
 
+	const getAllTweets = () => {
+		const token = localStorage.getItem(constants.TOKEN);
+		axios.get(routes.GET_ALL_TWEETS, { headers: { "Authorization": `Bearer ${token}` } })
+			.then((res) => {
+				console.log(res);
+			}).catch((error) => {
+			console.log(error);
+			ToastsStore.error(error.response.data.error);
+		});
+	};
+
 	return (
 		<div className="home">
 			<NavBar />
@@ -55,6 +66,10 @@ export default function Home() {
 
 				<Button onClick={getTweetsFromWill} block size="sm" type="submit">
 					Get will's tweets
+				</Button>
+
+				<Button onClick={getAllTweets} block size="sm" type="submit">
+					Get all tweets
 				</Button>
 			</Form>
 		</div>
