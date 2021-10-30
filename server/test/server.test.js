@@ -1,5 +1,5 @@
 const app = require("../server").app;
-const {messages, errors, query, routes} = require("../common");
+const { messages, errors, query, routes } = require("../common");
 const supertest = require("supertest");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const db = require("../database.js").db;

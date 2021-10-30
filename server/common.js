@@ -28,7 +28,7 @@ const query = {
 	GET_TWEETS: "SELECT user.email, name, tweet, timestamp from tweets join user on tweets.email = user.email WHERE user.email = ? ORDER BY timestamp DESC",
 	GET_ALL_TWEETS: "SELECT user.email, name, tweet, timestamp from tweets join user on tweets.email = user.email ORDER BY timestamp DESC LIMIT 50",
 
-	
+
 	GET_PASSWORD: "SELECT password from user WHERE email = ?",
 	INSERT_ACCOUNT: "INSERT INTO user (name, email, password) VALUES (?,?,?)",
 	INSERT_TWEET: "INSERT INTO tweets (email, tweet, timestamp) VALUES (?,?,?)",
