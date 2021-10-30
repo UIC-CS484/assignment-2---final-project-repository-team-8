@@ -1,19 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import "./Tweet.scss";
 
 const Tweet = ({ data }) => {
 	const date = new Date(data.timestamp).toDateString();
 	return (
-		<>
-			<ul>
-				<li>
-					{data.name} on {date}:
-				</li>
-				<li>
-					<b> {data.tweet}</b>
-				</li>
-			</ul>
-
-		</>
+		<div className={"tweet__container"}>
+			<Link to={"/profile/" + data.email}>{data.name}</Link> on {date}:
+			<br />
+			<b> {data.tweet}</b>
+		</div>
 	);
 };
 

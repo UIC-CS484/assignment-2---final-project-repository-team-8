@@ -6,7 +6,7 @@ import axios from "axios";
 import { constants, routes } from "../Common";
 import { ToastsStore } from "react-toasts";
 import NavBar from "./NavBar";
-import Tweet from "./Tweet";
+import TweetColumn from "./TweetColumn";
 
 class Home extends React.Component {
 	constructor() {
@@ -64,11 +64,8 @@ class Home extends React.Component {
 						Tweet
 					</Button>
 
-					<div>
-						{this.tweets.map(function(obj, index) {
-							return <div><Tweet data={obj} /> <br /></div>;
-						})}
-					</div>
+
+					<TweetColumn tweets={this.tweets} />
 				</Form>
 			</div>
 		);

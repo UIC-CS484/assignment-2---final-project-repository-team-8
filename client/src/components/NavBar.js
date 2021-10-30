@@ -1,5 +1,7 @@
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import React from "react";
+import { constants } from "../Common";
+import "./NavBar.scss";
 
 export default function NavBar() {
 
@@ -9,15 +11,18 @@ export default function NavBar() {
 		history.push("/login");
 	};
 
-	return <div>
-		<div className="redirect">
-			<Link to={"/home"}>Home</Link>
-		</div>
-		<div className="redirect">
-			<Link to={"/profile"}>Profile</Link>
-		</div>
-		<button onClick={handleLogout}>logout</button>
+	const goToProfile = () => {
+		history.push("/profile/" + localStorage.getItem(constants.EMAIL));
+	};
 
+	const goToHome = () => {
+		history.push("/home");
+	};
+
+	return <div className={"navbar__container"}>
+		<button onClick={goToHome}>Home</button>
+		<button onClick={goToProfile}>Profile</button>
+		<button onClick={handleLogout}>Logout</button>
 	</div>;
 }
 

@@ -1,0 +1,8 @@
+$padding: 8px;
+.tweet {
+    &__container {
+        border-radius: 8px;
+        background-color: #ebf4fc;
+        padding: $padding;
+    }
+}

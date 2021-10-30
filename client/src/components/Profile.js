@@ -1,21 +1,22 @@
 import React from "react";
 import NavBar from "./NavBar";
-import Tweet from "./Tweet";
 import { ToastsStore } from "react-toasts";
 import axios from "axios";
 import { constants, routes } from "../Common";
+import TweetColumn from "./TweetColumn";
 
 
 class Profile extends React.Component {
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
+		this.email = this.props.match.params.user;
 		this.tweets = [];
 	}
 
 	componentDidMount() {
 		const token = localStorage.getItem(constants.TOKEN);
-		axios.get(routes.TWEETS_FROM_USER + localStorage.getItem(constants.EMAIL), { headers: { "Authorization": `Bearer ${token}` } })
+		axios.get(routes.TWEETS_FROM_USER + this.email, { headers: { "Authorization": `Bearer ${token}` } })
 			.then((res) => {
 				this.tweets = res.data;
 				this.forceUpdate();
@@ -25,12 +26,16 @@ class Profile extends React.Component {
 	}
 
 	render() {
+
+		if (this.email !== this.props.match.params.user) {
+			this.email = this.props.match.params.user;
+			this.componentDidMount();
+		}
+
 		return <div>
 			<NavBar />
-			Hello {localStorage.getItem(constants.NAME)}
-			{this.tweets.map(function(obj, index) {
-				return <div><Tweet data={obj} /> <br /></div>;
-			})}
+			{this.email}'s profile
+			<TweetColumn tweets={this.tweets} />
 		</div>;
 	}
 }

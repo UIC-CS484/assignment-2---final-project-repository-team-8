@@ -7,18 +7,21 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./components/Profile";
+import "./App.scss";
 
 class App extends Component {
 
 	render() {
 		return (
-			<Router>
-				<Route exact path="/" component={Login} />
-				<Route path="/login" component={Login} />
-				<Route path="/register" component={Register} />
-				<ProtectedRoute path="/home" component={Home} />
-				<ProtectedRoute path="/profile" component={Profile} />
-			</Router>
+			<div className={"app__container"}>
+				<Router>
+					<Route exact path="/" component={Login} />
+					<Route path="/login" component={Login} />
+					<Route path="/register" component={Register} />
+					<ProtectedRoute path="/home" component={Home} />
+					<ProtectedRoute path="/profile/:user" component={Profile} />
+				</Router>
+			</div>
 		);
 	}
 }
