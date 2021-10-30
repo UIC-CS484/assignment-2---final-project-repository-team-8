@@ -4,7 +4,7 @@ import { ToastsStore } from "react-toasts";
 import axios from "axios";
 import { constants, routes } from "../Common";
 import TweetColumn from "./TweetColumn";
-
+import "./Profile.scss";
 
 class Profile extends React.Component {
 
@@ -34,7 +34,9 @@ class Profile extends React.Component {
 
 		return <div>
 			<NavBar />
-			{this.email}'s profile
+			<div className={"profile__name-header"}>
+				{this.email}'s profile
+			</div>
 			<TweetColumn tweets={this.tweets} />
 		</div>;
 	}
