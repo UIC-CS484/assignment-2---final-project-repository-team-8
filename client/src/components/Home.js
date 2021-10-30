@@ -36,6 +36,7 @@ class Home extends React.Component {
 			axios.post(routes.TWEET, data, { headers: { "Authorization": `Bearer ${token}` } })
 				.then((res) => {
 					const tt = {
+						name: localStorage.getItem(constants.NAME),
 						email: localStorage.getItem(constants.EMAIL),
 						tweet: this.tweet,
 						timestamp: new Date().toDateString()
