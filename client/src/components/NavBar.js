@@ -10,12 +10,16 @@ export default function NavBar() {
         history.push("/login");
     };
 
+    const goToProfile = () => {
+        history.push("/profile/" + localStorage.getItem(constants.EMAIL));
+    };
+
     return <div>
         <div className="redirect">
             <Link to={"/home"}>Home</Link>
         </div>
         <div className="redirect">
-            <Link to={"/profile/" + localStorage.getItem(constants.EMAIL)}>Your Profile</Link>
+            <button onClick={goToProfile}>Your Profile</button>
         </div>
         <button onClick={handleLogout}>logout</button>
 

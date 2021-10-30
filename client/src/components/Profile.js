@@ -10,8 +10,7 @@ class Profile extends React.Component {
 
     constructor(props) {
         super(props);
-        const email = this.props.match.params.user
-        this.email = email
+        this.email = this.props.match.params.user
         this.tweets = [];
     }
 
@@ -27,6 +26,12 @@ class Profile extends React.Component {
     }
 
     render() {
+
+        if (this.email !== this.props.match.params.user) {
+            this.email = this.props.match.params.user
+            this.componentDidMount()
+        }
+
         return <div>
             <NavBar/>
             {this.email}'s profile
