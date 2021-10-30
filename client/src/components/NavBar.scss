@@ -1,0 +1,12 @@
+$padding: 15px;
+.navbar {
+  &__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    max-width: 300px;
+    padding-top: $padding;
+    padding-bottom: $padding;
+  }
+}

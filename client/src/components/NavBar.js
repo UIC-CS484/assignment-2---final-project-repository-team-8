@@ -1,6 +1,7 @@
 import { useHistory } from "react-router-dom";
 import React from "react";
 import { constants } from "../Common";
+import "./NavBar.scss";
 
 export default function NavBar() {
 
@@ -18,7 +19,7 @@ export default function NavBar() {
 		history.push("/home");
 	};
 
-	return <div>
+	return <div className={"navbar__container"}>
 		<button onClick={goToHome}>Home</button>
 		<button onClick={goToProfile}>Profile</button>
 		<button onClick={handleLogout}>Logout</button>
