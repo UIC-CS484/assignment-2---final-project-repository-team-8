@@ -40,7 +40,6 @@ class Home extends React.Component {
 						tweet: this.tweet,
 						timestamp: new Date().toDateString()
 					};
-					console.log(tt);
 					this.tweets.unshift(tt);
 					this.forceUpdate();
 				}).catch((error) => {
