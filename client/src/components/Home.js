@@ -35,7 +35,13 @@ class Home extends React.Component {
 			};
 			axios.post(routes.TWEET, data, { headers: { "Authorization": `Bearer ${token}` } })
 				.then((res) => {
-					// TODO: put this tweet into the user's feed on homepage
+					const tt = {
+						email: localStorage.getItem(constants.EMAIL),
+						tweet: this.tweet,
+						timestamp: new Date().toDateString()
+					};
+					console.log(tt);
+					this.tweets.unshift(tt);
 					this.forceUpdate();
 				}).catch((error) => {
 				ToastsStore.error(error.response.data.error);
