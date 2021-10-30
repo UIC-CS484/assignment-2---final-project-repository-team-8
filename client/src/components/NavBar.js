@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom";
 import React from "react";
 import { constants } from "../Common";
-import "./NavBar.scss";
+import "./style/NavBar.scss";
 
 export default function NavBar() {
 

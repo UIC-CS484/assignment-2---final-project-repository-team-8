@@ -1,5 +1,5 @@
 import React from "react";
-import "./login.scss";
+import "./style/login.scss";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";

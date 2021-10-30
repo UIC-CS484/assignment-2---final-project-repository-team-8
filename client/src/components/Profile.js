@@ -4,7 +4,7 @@ import { ToastsStore } from "react-toasts";
 import axios from "axios";
 import { constants, routes } from "../Common";
 import TweetColumn from "./TweetColumn";
-import "./Profile.scss";
+import "./style/Profile.scss";
 
 class Profile extends React.Component {
 
