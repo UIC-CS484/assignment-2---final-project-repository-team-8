@@ -1,29 +1,28 @@
-import {Link, useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import React from "react";
-import {constants} from "../Common";
+import { constants } from "../Common";
 
 export default function NavBar() {
 
-    const history = useHistory();
-    const handleLogout = () => {
-        localStorage.clear();
-        history.push("/login");
-    };
+	const history = useHistory();
+	const handleLogout = () => {
+		localStorage.clear();
+		history.push("/login");
+	};
 
-    const goToProfile = () => {
-        history.push("/profile/" + localStorage.getItem(constants.EMAIL));
-    };
+	const goToProfile = () => {
+		history.push("/profile/" + localStorage.getItem(constants.EMAIL));
+	};
 
-    return <div>
-        <div className="redirect">
-            <Link to={"/home"}>Home</Link>
-        </div>
-        <div className="redirect">
-            <button onClick={goToProfile}>Your Profile</button>
-        </div>
-        <button onClick={handleLogout}>logout</button>
+	const goToHome = () => {
+		history.push("/home");
+	};
 
-    </div>;
+	return <div>
+		<button onClick={goToHome}>Home</button>
+		<button onClick={goToProfile}>Profile</button>
+		<button onClick={handleLogout}>Logout</button>
+	</div>;
 }
 
 
