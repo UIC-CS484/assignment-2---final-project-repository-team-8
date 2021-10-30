@@ -159,7 +159,7 @@ app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
 			}
 
 			if (rows) {
-				res.status(StatusCodes.OK).json({ rows });
+				res.status(StatusCodes.OK).json(rows);
 			} else {
 				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 					error: messages.UNEXPECTED_ERROR
