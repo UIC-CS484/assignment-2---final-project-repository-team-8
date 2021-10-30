@@ -1,0 +1,37 @@
+$margin: 0 auto;
+$form_width: 410px;
+$form_height: 120px;
+
+@media all and (min-width: 180px) {
+
+    .home {
+        &__container{
+            margin: $margin;
+        }
+
+        &__header {
+            text-align: center;
+            padding-bottom: 4%;
+        }
+    
+        &__tweetBtn {
+            margin: $margin;
+            width: 20%;
+            padding-bottom: 2%;
+        }
+
+        &__form {
+            margin-left: 9%;
+            padding-bottom: 2%;
+            .tweet {
+                width: $form_width;
+                max-width: $form_width;
+                min-width: $form_width;
+                height: $form_height;
+                max-height: $form_height;
+                min-height: $form_height;
+            }
+        }
+    }
+    
+}
