@@ -21,10 +21,8 @@ class Home extends React.Component {
 		axios.get(routes.GET_ALL_TWEETS, { headers: { "Authorization": `Bearer ${token}` } })
 			.then((res) => {
 				this.tweets = res.data;
-				console.log(this.tweets);
 				this.forceUpdate();
 			}).catch((error) => {
-			console.log(error);
 			ToastsStore.error(error.response.data.error);
 		});
 	}
@@ -38,9 +36,8 @@ class Home extends React.Component {
 			axios.post(routes.TWEET, data, { headers: { "Authorization": `Bearer ${token}` } })
 				.then((res) => {
 					// TODO: put this tweet into the user's feed on homepage
-					console.log(res);
+					this.forceUpdate();
 				}).catch((error) => {
-				console.log(error);
 				ToastsStore.error(error.response.data.error);
 			});
 		};

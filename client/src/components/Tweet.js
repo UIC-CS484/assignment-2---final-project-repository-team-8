@@ -2,7 +2,6 @@ import React from "react";
 
 const Tweet = ({ data }) => {
 	const date = new Date(data.timestamp).toDateString();
-	console.log(date);
 	return (
 		<>
 			<ul>
