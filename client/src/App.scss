@@ -1,7 +1,8 @@
 .app {
     &__container {
         max-width: 500px;
-        height: 100vh;
+        min-height: 100vh;
+        height: 100%;
         background-color: #cfe0fc;
         margin: 0 auto;
     }
