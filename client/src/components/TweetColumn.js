@@ -1,5 +1,5 @@
 import React from "react";
-import "./TweetColumn.scss";
+import "./style/TweetColumn.scss";
 import Tweet from "./Tweet";
 
 export default class TweetColumn extends React.Component {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Tweet.scss";
+import "./style/Tweet.scss";
 
 const Tweet = ({ data }) => {
 	const date = new Date(data.timestamp).toDateString();
