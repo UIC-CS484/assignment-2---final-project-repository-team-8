@@ -1,9 +1,9 @@
 import React from "react";
 import NavBar from "./NavBar";
-import Tweet from "./Tweet";
 import { ToastsStore } from "react-toasts";
 import axios from "axios";
 import { constants, routes } from "../Common";
+import TweetColumn from "./TweetColumn";
 
 
 class Profile extends React.Component {
@@ -35,9 +35,7 @@ class Profile extends React.Component {
 		return <div>
 			<NavBar />
 			{this.email}'s profile
-			{this.tweets.map(function(obj, index) {
-				return <div><Tweet data={obj} /> <br /></div>;
-			})}
+			<TweetColumn tweets={this.tweets} />
 		</div>;
 	}
 }
