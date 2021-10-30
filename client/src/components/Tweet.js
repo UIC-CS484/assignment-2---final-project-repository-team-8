@@ -6,7 +6,7 @@ const Tweet = ({ data }) => {
 		<>
 			<ul>
 				<li>
-					{data.email} on {date}:
+					{data.name} on {date}:
 				</li>
 				<li>
 					<b> {data.tweet}</b>
