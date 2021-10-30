@@ -86,7 +86,6 @@ app.post(routes.LOGIN, async (req, res, next) => {
 					res.status(StatusCodes.UNAUTHORIZED).json({ error: messages.LOGIN_FAILED });
 				} else {
 					const token = jwt.sign({ user: user.email }, SECRET);
-					console.log(token);
 					res.status(StatusCodes.OK).json({ message: messages.LOGIN_SUCCEEDED, token, name: user.name });
 				}
 			});
@@ -119,7 +118,54 @@ app.get(routes.ACCOUNT, (req, res) => {
 app.post(routes.TWEET, async (req, res, next) => {
 	passport.authenticate("jwt", { session: false }, (err, user, info) => {
 		const email = user.email;
-		res.status(StatusCodes.OK).json({ msg: "Hello from /tweet!" });
+		const tweet = req.body.tweet;
+		const params = [email, tweet, new Date().getTime()];
+		db.run(query.INSERT_TWEET, params, (dbErr, row) => {
+			if (dbErr) {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: messages.TWEET_FAILURE });
+			} else {
+				res.status(StatusCodes.OK).json({ message: messages.TWEET_SUBMITTED });
+			}
+		});
+	})(req, res, next);
+});
+
+app.get(routes.TWEETS_FROM_USER, async (req, res, next) => {
+	passport.authenticate("jwt", { session: false }, (err, user, info) => {
+		const params = [req.params.email];
+		db.all(query.GET_TWEETS, params, function(err, rows) {
+			if (err) {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+				return console.error(err);
+			}
+
+			if (rows) {
+				res.status(StatusCodes.OK).json(rows);
+			} else {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+					error: messages.UNEXPECTED_ERROR
+				});
+			}
+		});
+	})(req, res, next);
+});
+
+app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
+	passport.authenticate("jwt", { session: false }, (err, user, info) => {
+		db.all(query.GET_ALL_TWEETS, [], function(err, rows) {
+			if (err) {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+				return console.error(err);
+			}
+
+			if (rows) {
+				res.status(StatusCodes.OK).json({ rows });
+			} else {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+					error: messages.UNEXPECTED_ERROR
+				});
+			}
+		});
 	})(req, res, next);
 });
 

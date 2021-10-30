@@ -6,6 +6,8 @@ const messages = {
 	INCORRECT_PASSWORD: "Passwords do not match!",
 	REGISTRATION_FAILED: "Unable to register user. Please try again!",
 	REGISTRATION_SUCCEEDED: "Successfully registered the account!",
+	TWEET_SUBMITTED: "Successfully submitted a tweet!",
+	TWEET_FAILURE: "Unable to submit tweet!",
 	LOGIN_FAILED: "Login failed!",
 	LOGIN_SUCCEEDED: "Successfully authenticated the login!",
 	BAD_PASSWORD_FORMAT: "Passwords need at least one uppercase letter, one lowercase letter, and one number",
@@ -21,8 +23,11 @@ const errors = {
 const query = {
 	GET_ACCOUNT: "SELECT * from user WHERE email = ?",
 	GET_EMAIL: "SELECT email from user WHERE email = ?",
+	GET_TWEETS: "SELECT * from tweets WHERE email = ?",
+	GET_ALL_TWEETS: "SELECT * from tweets limit 25",
 	GET_PASSWORD: "SELECT password from user WHERE email = ?",
 	INSERT_ACCOUNT: "INSERT INTO user (name, email, password) VALUES (?,?,?)",
+	INSERT_TWEET: "INSERT INTO tweets (email, tweet, timestamp) VALUES (?,?,?)",
 	CREATE_USER_TABLE: "CREATE TABLE IF NOT EXISTS user (email text PRIMARY KEY UNIQUE, password text, name text, CONSTRAINT email_unique UNIQUE (email))",
 	CREATE_TWEETS_TABLE: "CREATE TABLE IF NOT EXISTS tweets (email text, tweet text, timestamp integer)"
 };
@@ -31,7 +36,9 @@ const routes = {
 	REGISTER: "/account/register",
 	LOGIN: "/account/login",
 	ACCOUNT: "/account",
-	TWEET: "/tweet"
+	TWEET: "/tweet",
+	TWEETS_FROM_USER: "/tweets/user/:email",
+	GET_ALL_TWEETS: "/tweets/all"
 };
 
 const SECRET = "Hello, world!";
