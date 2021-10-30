@@ -39,7 +39,6 @@ const query = {
 const routes = {
 	REGISTER: "/account/register",
 	LOGIN: "/account/login",
-	ACCOUNT: "/account",
 	TWEET: "/tweet",
 	TWEETS_FROM_USER: "/tweets/user/:email",
 	GET_ALL_TWEETS: "/tweets/all"
