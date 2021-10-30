@@ -18,10 +18,12 @@ export default function NavBar() {
 	const goToWeather = () => {
 		history.push("/weather");
 	};
-	
+
 	const handleLogout = () => {
-		localStorage.clear();
-		history.push("/login");
+		if(window.confirm('You sure you want to logout?')){
+			localStorage.clear();
+			history.push("/login");
+		}
 	};
 
 	return <div className={"navbar__container"}>
