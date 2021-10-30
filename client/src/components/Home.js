@@ -62,7 +62,7 @@ class Home extends React.Component {
 					</div>
 
 					<div className={"home__tweetBtn"}>
-						<Button onClick={submitTweet} block size="sm" type="submit">Tweet</Button>
+						<Button onClick={submitTweet} block size="sm" type="submit">pweet</Button>
 					</div>
 
 					<TweetColumn tweets={this.tweets} />
