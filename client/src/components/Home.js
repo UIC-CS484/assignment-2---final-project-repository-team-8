@@ -1,5 +1,5 @@
 import React from "react";
-import "./style/login.scss";
+import "./style/Home.scss";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
@@ -49,21 +49,21 @@ class Home extends React.Component {
 		};
 
 		return (
-			<div className="home">
+			<div className="home__container">
 				<NavBar />
-				<Form onSubmit={ev => {
-					ev.preventDefault();
-				}}>
 
-					<Form.Group className="mb-3" controlId="formBasicPassword">
-						<Form.Label>Tweet</Form.Label>
-						<Form.Control onChange={e => this.tweet = e.target.value} placeholder="Tweet" />
-					</Form.Group>
+				<div className={"home__header"}>
+					<h1> Welcome to Pwitter! </h1>
+				</div>
 
-					<Button onClick={submitTweet} block size="sm" type="submit">
-						Tweet
-					</Button>
+				<Form onSubmit={ev => { ev.preventDefault(); }}>
+					<div className={"home__form"}>
+						<textarea class="tweet" onChange={e => this.tweet = e.target.value} placeholder="What would you like to say today?" />
+					</div>
 
+					<div className={"home__tweetBtn"}>
+						<Button onClick={submitTweet} block size="sm" type="submit">Tweet</Button>
+					</div>
 
 					<TweetColumn tweets={this.tweets} />
 				</Form>
