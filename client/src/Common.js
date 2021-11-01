@@ -1,7 +1,6 @@
 const routes = {
 	REGISTER: "/account/register",
 	LOGIN: "/account/login",
-	ACCOUNT: "/account",
 	TWEET: "/tweet",
 	TWEETS_FROM_USER: "/tweets/user/",
 	GET_ALL_TWEETS: "/tweets/all",

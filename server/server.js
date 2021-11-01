@@ -96,28 +96,6 @@ app.post(routes.LOGIN, async (req, res, next) => {
 	})(req, res, next);
 });
 
-app.get(routes.ACCOUNT, (req, res) => {
-	if (!req.query.email) {
-		res.status(StatusCodes.BAD_REQUEST).json({ error: messages.BAD_REQUEST });
-	}
-
-	const params = [req.query.email];
-	db.get(query.GET_ACCOUNT, params, function(err, row) {
-		if (err) {
-			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
-			return console.error(err);
-		}
-
-		if (row) {
-			res.status(StatusCodes.OK).json(row);
-		} else {
-			res.status(StatusCodes.NOT_FOUND).json({
-				error: messages.USER_NOT_FOUND
-			});
-		}
-	});
-});
-
 app.post(routes.TWEET, async (req, res, next) => {
 	passport.authenticate("jwt", { session: false }, (err, user, info) => {
 		const email = user.email;
