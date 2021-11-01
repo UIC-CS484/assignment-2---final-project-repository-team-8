@@ -42,7 +42,8 @@ const routes = {
 	ACCOUNT: "/account",
 	TWEET: "/tweet",
 	TWEETS_FROM_USER: "/tweets/user/:email",
-	GET_ALL_TWEETS: "/tweets/all"
+	GET_ALL_TWEETS: "/tweets/all",
+	GET_API_KEY: "/weather_api"
 };
 
 const SECRET = "Hello, world!";

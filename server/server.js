@@ -28,6 +28,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 require("./passportConf")(passport);
 
+//Sending over the api key
+require('dotenv').config()
+
 // app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.listen(port, () => {
@@ -169,12 +172,17 @@ app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
 	})(req, res, next);
 });
 
+app.get(routes.GET_API_KEY, async (err, res) => {
+	if (res) {
+		res.status(StatusCodes.OK).json(process.env.REACT_APP_WEATHER_API_KEY);
+	}
+});
+
 app.get("/protected-hello", passport.authenticate("jwt", { session: false }),
 	function(req, res) {
 		res.status(StatusCodes.OK).json({ message: "Hello World!" });
 	}
 );
-
 
 module.exports.app = app;
 module.exports.routes = routes;
