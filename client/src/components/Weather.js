@@ -36,7 +36,7 @@ export default function Weather() {
                 data={data}
                 lang="en"
                 locationLabel = {city}
-                unitsLabels={{ temperature: 'C', windSpeed: 'Km/h' }}
+                unitsLabels={{ temperature: 'F', windSpeed: 'Km/h' }}
                 showForecast
             />
             

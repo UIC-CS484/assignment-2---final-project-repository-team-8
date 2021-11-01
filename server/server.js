@@ -156,11 +156,5 @@ app.get(routes.GET_API_KEY, async (err, res) => {
 	}
 });
 
-app.get("/protected-hello", passport.authenticate("jwt", { session: false }),
-	function(req, res) {
-		res.status(StatusCodes.OK).json({ message: "Hello World!" });
-	}
-);
-
 module.exports.app = app;
 module.exports.routes = routes;
