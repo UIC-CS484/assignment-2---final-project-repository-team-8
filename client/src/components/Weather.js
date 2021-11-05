@@ -40,16 +40,18 @@ export default function Weather() {
 
     const weatherBtn = () => {
         if (city === constants.EMPTY) {
-			ToastsStore.error(errors.EMAIL);
+			ToastsStore.error(errors.WEATHER);
 			return;
-		} 
+		}
 
         Geocode.setApiKey(googleApi);
         Geocode.setLanguage("en");
         Geocode.setLocationType("ROOFTOP");
+        Geocode.enableDebug();
 
         // Get latitude & longitude from address.
         Geocode.fromAddress(city).then((response) => {
+            console.log(response);
             const { lat, lng } = response.results[0].geometry.location;
             setPosition({
                 latitude: lat,
@@ -57,6 +59,7 @@ export default function Weather() {
             });
         },
         (error) => {
+            console.log("getting here");
             ToastsStore.error(error);
         });
     }
@@ -67,7 +70,7 @@ export default function Weather() {
             
             <Form onSubmit={ev => { ev.preventDefault(); }}>
                 <div className={"home__form"}>
-                    <Form.Label>Please enter your current location</Form.Label>
+                    <Form.Label>Please enter your current location or address</Form.Label>
                     <Form.Control onChange={e => setCity(e.target.value)} type="city" placeholder="eg. Chicago" />
                 </div>
 			</Form>
