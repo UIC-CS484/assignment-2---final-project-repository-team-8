@@ -11,7 +11,8 @@ const routes = {
 const errors = {
 	NAME: "Please provide a name",
 	EMAIL: "Please provide an email",
-	PASSWORD: "Please provide an password"
+	PASSWORD: "Please provide an password",
+	WEATHER: "Please provide a city"
 };
 
 const constants = {
