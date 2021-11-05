@@ -12,7 +12,7 @@ const errors = {
 	NAME: "Please provide a name",
 	EMAIL: "Please provide an email",
 	PASSWORD: "Please provide an password",
-	WEATHER: "Please provide a city"
+	WEATHER: "Please provide a valid city or address"
 };
 
 const constants = {

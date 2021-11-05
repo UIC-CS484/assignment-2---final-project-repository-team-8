@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import NavBar from "./NavBar";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -66,14 +66,15 @@ export default function Weather() {
     
 	return (
 		<div className="weather__container">
+            <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_CENTER} />
             <NavBar />
-            
             <Form onSubmit={ev => { ev.preventDefault(); }}>
                 <div className={"home__form"}>
                     <Form.Label>Please enter your current location or address</Form.Label>
                     <Form.Control onChange={e => setCity(e.target.value)} type="city" placeholder="eg. Chicago" />
                 </div>
 			</Form>
+
             <div className={"home__tweetBtn"}>
                 <Button onClick={weatherBtn} block size="sm" type="login">Get Weather</Button> <br /><br />
             </div>
