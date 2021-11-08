@@ -22,6 +22,7 @@ class App extends Component {
 					<ProtectedRoute path="/home" component={Home} />
 					<ProtectedRoute path="/profile/:user" component={Profile} />
 					<ProtectedRoute path="/weather" component={Weather} />
+					<ProtectedRoute path="/manage-account" component={Account} />
 				</Router>
 			</div>
 		);
