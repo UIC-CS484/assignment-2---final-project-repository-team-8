@@ -1,94 +1,82 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import NavBar from "./NavBar";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import axios from 'axios';
-import Geocode from "react-geocode";
 import ReactWeather, { useOpenWeather } from 'react-open-weather';
-import { constants, errors, routes } from "../Common";
-import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
+import { routes } from "../Common";
+import axios from 'axios';
+import Button from "react-bootstrap/Button";
 
 export default function Weather() {
 
-    const [googleApi, setGoogleApi] = useState("");
-    const [weatherApi, setWeatherApi] = useState("");
     const [position, setPosition] = useState({});
-    const [city, setCity] = useState("");
+    const [error, setError] = useState(null);
+    const [api, setApi] = useState("");
 
-    // Get google weather api
+    // Get the weather api
     React.useEffect(() => {
-        axios.get(routes.GET_GOOGLE_API_KEY).then((res) => {
-            setGoogleApi(res.data);
+        axios.get(routes.GET_API_KEY).then((res) => {
+            setApi(res.data);
         });
     }, []);
-
-    // Get open weather api
-    React.useEffect(() => {
-        axios.get(routes.GET_WEATHER_API_KEY).then((res) => {
-            setWeatherApi(res.data);
-        });
-    }, []);
-
     
+    const onChange = ({coords}) => {
+        setPosition({
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+        });
+    };  
+    
+    const onError = (error) => {
+        setError(error.message);
+    };
+
+    useEffect(() => {
+        const geo = navigator.geolocation;
+        if (!geo) {
+            setError('Geolocation is not supported');
+            return;
+        }    
+        
+        const watcher = geo.watchPosition(onChange, onError);    
+        return () => geo.clearWatch(watcher);
+
+    }, []); 
+
     const { data, isLoading, errorMessage } = useOpenWeather({
-        key: weatherApi, 
-        lat: position.latitude, 
-        lon: position.longitude, 
-        lang: 'en', 
+        key: api,
+        lat: position.latitude,
+        lon: position.longitude,
+        lang: 'en',
         unit: 'metric'
     });
 
     const weatherBtn = () => {
-        if (city === constants.EMPTY) {
-			ToastsStore.error(errors.WEATHER);
-			return;
-		}
-
-        Geocode.setApiKey(googleApi);
-        Geocode.setLanguage("en");
-        Geocode.setLocationType("ROOFTOP");
-        Geocode.enableDebug();
-
-        // Get latitude & longitude from address.
-        Geocode.fromAddress(city).then((response) => {
-            console.log(response);
-            const { lat, lng } = response.results[0].geometry.location;
+        navigator.geolocation.getCurrentPosition(function(position) {
             setPosition({
-                latitude: lat,
-                longitude: lng,
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
             });
-        },
-        (error) => {
-            console.log("getting here");
-            ToastsStore.error(error);
         });
     }
-    
+
 	return (
 		<div className="weather__container">
-            <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_CENTER} />
             <NavBar />
-            <Form onSubmit={ev => { ev.preventDefault(); }}>
-                <div className={"home__form"}>
-                    <Form.Label>Please enter your current location or address</Form.Label>
-                    <Form.Control onChange={e => setCity(e.target.value)} type="city" placeholder="eg. Chicago" />
-                </div>
-			</Form>
+            <br/>
 
             <div className={"home__tweetBtn"}>
-                <Button onClick={weatherBtn} block size="sm" type="login">Get Weather</Button> <br /><br />
+                <Button onClick={weatherBtn} block size="sm" type="login">Show Weather</Button> <br />
             </div>
 
             <ReactWeather
                 forecast="5days"
                 isLoading={isLoading}
-                errorMessage={errorMessage}
+                errorMessage={error}
                 data={data}
                 lang="en"
-                locationLabel = {city}
-                unitsLabels={{ temperature: 'C', windSpeed: 'Km/h' }}
+                unitsLabels={{ temperature: 'F', windSpeed: 'Km/h' }}
                 showForecast
             />
+            
         </div>
 	);
 }

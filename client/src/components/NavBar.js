@@ -6,7 +6,7 @@ import "./style/NavBar.scss";
 export default function NavBar() {
 
 	const history = useHistory();
-	
+
 	const goToHome = () => {
 		history.push("/home");
 	};
@@ -20,16 +20,21 @@ export default function NavBar() {
 	};
 
 	const handleLogout = () => {
-		if(window.confirm('You sure you want to logout?')){
+		if (window.confirm("You sure you want to logout?")) {
 			localStorage.clear();
 			history.push("/login");
 		}
+	};
+
+	const goToAccount = () => {
+		history.push("/settings");
 	};
 
 	return <div className={"navbar__container"}>
 		<button class="navbar__container__button" onClick={goToHome}>Home</button>
 		<button class="navbar__container__button" onClick={goToProfile}>Profile</button>
 		<button class="navbar__container__button" onClick={goToWeather}>Weather</button>
+		<button class="navbar__container__button" onClick={goToAccount}>Settings</button>
 		<button class="navbar__container__button" onClick={handleLogout}>Logout</button>
 	</div>;
 }
