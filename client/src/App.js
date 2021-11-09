@@ -8,7 +8,7 @@ import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./components/Profile";
 import Weather from "./components/Weather";
-import Account from "./components/Account";
+import Settings from "./components/Settings";
 import "./App.scss";
 
 class App extends Component {
@@ -23,7 +23,7 @@ class App extends Component {
 					<ProtectedRoute path="/home" component={Home} />
 					<ProtectedRoute path="/profile/:user" component={Profile} />
 					<ProtectedRoute path="/weather" component={Weather} />
-					<ProtectedRoute path="/manage-account" component={Account} />
+					<ProtectedRoute path="/settings" component={Settings} />
 				</Router>
 			</div>
 		);

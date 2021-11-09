@@ -1,41 +1,78 @@
-import React, { useState } from "react";
+import React, {useState, useEffect} from 'react';
 import NavBar from "./NavBar";
 import ReactWeather, { useOpenWeather } from 'react-open-weather';
-import GetLocation from "./GetLocation";
-import Form from "react-bootstrap/Form";
+import { routes } from "../Common";
+import axios from 'axios';
+import Button from "react-bootstrap/Button";
 
 export default function Weather() {
 
-    const [city, setCity] = useState("");
+    const [position, setPosition] = useState({});
+    const [error, setError] = useState(null);
+    const [api, setApi] = useState("");
 
-    const {latitude, longitude, api, error} = GetLocation();
+    // Get the weather api
+    React.useEffect(() => {
+        axios.get(routes.GET_API_KEY).then((res) => {
+            setApi(res.data);
+        });
+    }, []);
+    
+    const onChange = ({coords}) => {
+        setPosition({
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+        });
+    };  
+    
+    const onError = (error) => {
+        setError(error.message);
+    };
+
+    useEffect(() => {
+        const geo = navigator.geolocation;
+        if (!geo) {
+            setError('Geolocation is not supported');
+            return;
+        }    
+        
+        const watcher = geo.watchPosition(onChange, onError);    
+        return () => geo.clearWatch(watcher);
+
+    }, []); 
 
     const { data, isLoading, errorMessage } = useOpenWeather({
         key: api,
-        lat: latitude,
-        lon: longitude,
+        lat: position.latitude,
+        lon: position.longitude,
         lang: 'en',
         unit: 'metric'
     });
-    
+
+    const weatherBtn = () => {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            setPosition({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+            });
+        });
+    }
+
 	return (
 		<div className="weather__container">
             <NavBar />
-            
-            <Form onSubmit={ev => { ev.preventDefault(); }}>
-                <div className={"home__form"}>
-                    <Form.Label>Please enter your current location</Form.Label>
-                    <Form.Control onChange={e => setCity(e.target.value)} type="city" placeholder="eg. Chicago" />
-                </div>
-			</Form>
+            <br/>
+
+            <div className={"home__tweetBtn"}>
+                <Button onClick={weatherBtn} block size="sm" type="login">Show Weather</Button> <br />
+            </div>
 
             <ReactWeather
                 forecast="5days"
                 isLoading={isLoading}
-                errorMessage={errorMessage}
+                errorMessage={error}
                 data={data}
                 lang="en"
-                locationLabel = {city}
                 unitsLabels={{ temperature: 'F', windSpeed: 'Km/h' }}
                 showForecast
             />

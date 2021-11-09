@@ -27,15 +27,15 @@ export default function NavBar() {
 	};
 
 	const goToAccount = () => {
-		history.push("/manage-account");
+		history.push("/settings");
 	};
 
 	return <div className={"navbar__container"}>
 		<button class="navbar__container__button" onClick={goToHome}>Home</button>
 		<button class="navbar__container__button" onClick={goToProfile}>Profile</button>
 		<button class="navbar__container__button" onClick={goToWeather}>Weather</button>
+		<button class="navbar__container__button" onClick={goToAccount}>Settings</button>
 		<button class="navbar__container__button" onClick={handleLogout}>Logout</button>
-		<button class="navbar__container__button" onClick={goToAccount}>Account Management</button>
 	</div>;
 }
 
