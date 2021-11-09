@@ -105,9 +105,20 @@ describe("Testing Registration and Login", () => {
 // Tests for testing tweet backend functionality
 
 describe("Testing backend Tweet logic", () => {
-	test("Logging in, and Creating a tweet", async () => {
+	test("Creating an accouunt, Logging in, and Creating a tweet", async () => {
 
-		const [name, email, password] = ["Will", "test@will.com", "Will123!"];
+		const [name, email, password] = ["ChungusFan", "lolu@gamer.com", "Pass_Word123!"];
+		const register = await supertest(app)
+			.post(routes.REGISTER)
+			.send({
+				email: email,
+				password: password,
+				name: name
+			});
+
+		expect(register.statusCode).toEqual(StatusCodes.OK);
+		expect(register.body.message).toEqual(messages.REGISTRATION_SUCCEEDED);
+
 		const login = await supertest(app)
 			.post(routes.LOGIN)
 			.send({
