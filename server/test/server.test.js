@@ -100,3 +100,33 @@ describe("Testing Registration and Login", () => {
 		expect(registerTwice.body.error).toEqual(messages.EMAIL_ALREADY_EXISTS);
 	});
 });
+
+
+// Tests for testing tweet backend functionality
+
+describe("Testing backend Tweet logic", () => {
+	test("Logging in, and Creating a tweet", async () => {
+
+		const [name, email, password] = ["Will", "test@will.com", "Will123!"];
+		const login = await supertest(app)
+			.post(routes.LOGIN)
+			.send({
+				email: email,
+				password: password
+			});
+
+		expect(login.body.message).toEqual(messages.LOGIN_SUCCEEDED);
+		expect(login.statusCode).toEqual(StatusCodes.OK);
+
+		const tweet = "Creating a tweet and submitting the tweet";
+		const createTweet = await supertest(app)
+			.post(routes.TWEET)
+			.send({
+				tweet: tweet
+			});
+
+		expect(createTweet.body.message).toEqual(messages.TWEET_SUBMITTED);
+		expect(createTweet.statusCode).toEqual(StatusCodes.OK);
+	});
+
+});
