@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./components/Profile";
 import Weather from "./components/Weather";
+import Account from "./components/Account";
 import "./App.scss";
 
 class App extends Component {
