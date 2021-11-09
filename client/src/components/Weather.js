@@ -13,7 +13,7 @@ export default function Weather() {
 
     // Get the weather api
     React.useEffect(() => {
-        axios.get(routes.GET_API_KEY).then((res) => {
+        axios.get(routes.GET_WEATHER_API_KEY).then((res) => {
             setApi(res.data);
         });
     }, []);

@@ -4,8 +4,7 @@ const routes = {
 	TWEET: "/tweet",
 	TWEETS_FROM_USER: "/tweets/use",
 	GET_ALL_TWEETS: "/tweets/all",
-	GET_WEATHER_API_KEY: "/api/weather",
-	GET_GOOGLE_API_KEY: "/api/google"
+	GET_WEATHER_API_KEY: "/api/weather"
 };
 
 const errors = {

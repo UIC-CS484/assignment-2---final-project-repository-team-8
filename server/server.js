@@ -150,12 +150,6 @@ app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
 	})(req, res, next);
 });
 
-// Google API call
-app.get(routes.GET_GOOGLE_API_KEY, async (err, res) => {
-	if (res) {
-		res.status(StatusCodes.OK).json(process.env.REACT_APP_GOOGLE_API_KEY);
-	}
-});
 // Open Weather API call
 app.get(routes.GET_WEATHER_API_KEY, async (err, res) => {
 	if (res) {
