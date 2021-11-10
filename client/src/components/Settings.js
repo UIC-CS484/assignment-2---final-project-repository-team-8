@@ -29,7 +29,6 @@ export default function Settings() {
 			.then((res) => {
 				ToastsStore.success("It worked lul");
 			}).catch((error) => {
-			console.log(error);
 			ToastsStore.error(error.response.data.error);
 		});
 

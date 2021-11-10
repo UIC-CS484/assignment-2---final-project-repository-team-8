@@ -167,7 +167,8 @@ app.post(routes.UPDATE_PWD, async (req, res, next) => {
 				return;
 			}
 
-			const params = [req.body.name, req.body.email, hash];
+
+			const params = [hash, req.body.email, req.body.name];
 			db.run(query.UPDATE_PASSWORD, params, (dbErr, row) => {
 				if (dbErr) {
 					res.status(StatusCodes.CONFLICT).json({ error: messages.PASSWORD_DB_FAIL });
