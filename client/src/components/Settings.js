@@ -1,8 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "./NavBar";
 import Form from "react-bootstrap/Form";
+import axios from "axios";
+import { constants, errors, routes } from "../Common";
+import { ToastsStore } from "react-toasts";
+import { useHistory } from "react-router-dom";
 
-export default function Account() {
+export default function Settings() {
+	const token = localStorage.getItem(constants.TOKEN);
+	const [curPwd, setCurPwd] = useState("");
+	const [newPwd, setNewPwd] = useState("");
+	const history = useHistory();
+
+	const updatePassword = () => {
+		if (curPwd === constants.EMPTY) {
+			ToastsStore.error(errors.CURPWD);
+			return;
+		} else if (newPwd === constants.EMPTY) {
+			ToastsStore.error(errors.NEWPWD);
+			return;
+		}
+
+		const data = {
+			email: localStorage.getItem(constants.EMAIL),
+			currentPassword: curPwd,
+			newPassword: newPwd,
+			name: localStorage.getItem(constants.NAME)
+		};
+		axios.post(routes.UPDATE_PWD, data, { headers: { "Authorization": `Bearer ${token}` } })
+			.then((res) => {
+				history.push("/account/update");
+			}).catch((error) => {
+			ToastsStore.error(error.response.data.error);
+		});
+
+	};
 
 	return <div className="account__container">
 		<NavBar />
@@ -12,12 +44,14 @@ export default function Account() {
 		<div className="UpdatePwd">
 			Update Password
 			<Form.Group className="mb-3" controlId="formCurPassword">
-				<Form.Control type="password" placeholder="Enter Current Password" />
+				<Form.Control onChange={e => setCurPwd(e.target.value)} type="password"
+							  placeholder="Enter Current Password" />
 			</Form.Group>
 			<Form.Group className="mb-3" controlId="formNewPassword">
-				<Form.Control type="password" placeholder="Enter New Password" />
+				<Form.Control onChange={e => setNewPwd(e.target.value)} type="password"
+							  placeholder="Enter New Password" />
 			</Form.Group>
-			<button type="button" className="btn btn-primary btn-lg">Update</button>
+			<button onClick={updatePassword} type="button" className="btn btn-primary btn-lg">Update</button>
 		</div>
 		<div className="DeleteAcct">
 			Delete Account

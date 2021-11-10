@@ -152,7 +152,7 @@ app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
 
 app.post(routes.UPDATE_PWD, async (req, res, next) => {
 	passport.authenticate("jwt", { session: false }, (err, user, info) => {
-		const [ok, reason] = validPasswordFormat(req.body.password);
+		const [ok, reason] = validPasswordFormat(req.body.newPassword);
 		if (!ok) {
 			console.log(reason);
 			res.status(StatusCodes.BAD_REQUEST).json({ error: reason });
@@ -160,7 +160,7 @@ app.post(routes.UPDATE_PWD, async (req, res, next) => {
 		}
 
 
-		bcrypt.hash(req.body.password, saltRounds, function(hashErr, hash) {
+		bcrypt.hash(req.body.newPassword, saltRounds, function(hashErr, hash) {
 			if (hashErr) {
 				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: messages.PASSWORD_UPDATE_FAIL });
 				return;
