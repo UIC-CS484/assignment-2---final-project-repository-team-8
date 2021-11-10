@@ -12,6 +12,8 @@ const app = express();
 const saltRounds = 10;
 const port = process.env.NODE_ENV === "test" ? 8081 : 8080;
 const db = require("./database.js").db;
+const querystring = require('querystring');
+var SpotifyWebApi = require('spotify-web-api-node');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,6 +29,8 @@ app.use(cookieParser("secretcode"));
 app.use(passport.initialize());
 app.use(passport.session());
 require("./passportConf")(passport);
+
+scopes = ['user-read-private', 'user-read-email','playlist-modify-public','playlist-modify-private']
 
 //Sending over the api key
 require('dotenv').config()
@@ -156,6 +160,38 @@ app.get(routes.GET_WEATHER_API_KEY, async (err, res) => {
 		res.status(StatusCodes.OK).json(process.env.REACT_APP_WEATHER_API_KEY);
 	}
 });
+
+
+var spotifyApi = new SpotifyWebApi({
+	clientId: process.env.SPOTIFY_API_ID,
+	redirectUri: process.env.REDIRECT_URL
+});
+
+app.get(routes.SPOTIFY_AUTH, function(req, res) {
+	var html = spotifyApi.createAuthorizeURL(scopes)
+	console.log(html)
+	res.send(html+"&show_dialog=true")
+});
+
+app.post('/spotify/token', (req, res) => {
+
+//  Get the "code" value posted from the client-side and get the user's accessToken from the spotify api     
+	const code = req.body.code
+
+	// Retrieve an access token
+	spotifyApi.authorizationCodeGrant(code).then((data) => {
+
+		// Returning the User's AccessToken in the json formate  
+		res.json({
+			accessToken : data.body.access_token,
+		}) 
+	})
+	.catch((err) => {
+		console.log(err);
+		res.sendStatus(400)
+	})
+
+})
 
 module.exports.app = app;
 module.exports.routes = routes;
