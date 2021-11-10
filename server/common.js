@@ -12,7 +12,11 @@ const messages = {
 	LOGIN_SUCCEEDED: "Successfully authenticated the login!",
 	BAD_PASSWORD_FORMAT: "Passwords need at least one uppercase letter, one lowercase letter, and one number",
 	BAD_EMAIL_FORMAT: "Please provide a valid email",
-	BAD_REGISTRATION_PARAMETERS: "Please provide a name, email, and password"
+	BAD_REGISTRATION_PARAMETERS: "Please provide a name, email, and password",
+
+	PASSWORD_UPDATE_SUCCESS: "Successfully updated the password!",
+	PASSWORD_UPDATE_FAIL: "Unable to change password!",
+	PASSWORD_DB_FAIL: "Database error occurred when trying to update password!"
 };
 
 const errors = {
@@ -33,7 +37,9 @@ const query = {
 	INSERT_ACCOUNT: "INSERT INTO user (name, email, password) VALUES (?,?,?)",
 	INSERT_TWEET: "INSERT INTO tweets (email, tweet, timestamp) VALUES (?,?,?)",
 	CREATE_USER_TABLE: "CREATE TABLE IF NOT EXISTS user (email text PRIMARY KEY UNIQUE, password text, name text, CONSTRAINT email_unique UNIQUE (email))",
-	CREATE_TWEETS_TABLE: "CREATE TABLE IF NOT EXISTS tweets (email text, tweet text, timestamp integer)"
+	CREATE_TWEETS_TABLE: "CREATE TABLE IF NOT EXISTS tweets (email text, tweet text, timestamp integer)",
+
+	UPDATE_PASSWORD: "UPDATE user SET password = ? WHERE email = ? AND name = ?"
 };
 
 const routes = {
@@ -43,6 +49,7 @@ const routes = {
 	TWEETS_FROM_USER: "/tweets/user/:email",
 	GET_ALL_TWEETS: "/tweets/all",
 	GET_WEATHER_API_KEY: "/api/weather",
+	UPDATE_PWD: "/account/update"
 };
 
 const SECRET = "Hello, world!";

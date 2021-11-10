@@ -29,7 +29,7 @@ app.use(passport.session());
 require("./passportConf")(passport);
 
 //Sending over the api key
-require('dotenv').config()
+require("dotenv").config();
 
 // app.use(express.static(path.resolve(__dirname, "../client/build")));
 
@@ -146,6 +146,34 @@ app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
 					error: messages.UNEXPECTED_ERROR
 				});
 			}
+		});
+	})(req, res, next);
+});
+
+app.post(routes.UPDATE_PWD, async (req, res, next) => {
+	passport.authenticate("jwt", { session: false }, (err, user, info) => {
+		const [ok, reason] = validPasswordFormat(req.body.password);
+		if (!ok) {
+			console.log(reason);
+			res.status(StatusCodes.BAD_REQUEST).json({ error: reason });
+			return;
+		}
+
+
+		bcrypt.hash(req.body.password, saltRounds, function(hashErr, hash) {
+			if (hashErr) {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: messages.PASSWORD_UPDATE_FAIL });
+				return;
+			}
+
+			const params = [req.body.name, req.body.email, hash];
+			db.run(query.UPDATE_PASSWORD, params, (dbErr, row) => {
+				if (dbErr) {
+					res.status(StatusCodes.CONFLICT).json({ error: messages.PASSWORD_DB_FAIL });
+				} else {
+					res.status(StatusCodes.OK).json({ message: messages.PASSWORD_UPDATE_SUCCESS });
+				}
+			});
 		});
 	})(req, res, next);
 });
