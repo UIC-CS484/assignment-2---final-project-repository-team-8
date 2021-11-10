@@ -33,17 +33,5 @@ function validRegistrationParameters(name, email, password) {
 	return [true, null];
 }
 
-function validPasswordFormat(password) {
-	const passwordIsPresent = !!password;
-	const passwordIsValid = PASSWORD_FORMAT.test(password);
-
-	if (!passwordIsPresent) {
-		return [false, messages.BAD_REGISTRATION_PARAMETERS];
-	} else if (!passwordIsValid) {
-		return [false, messages.BAD_EMAIL_FORMAT];
-	}
-
-	return [true, null];
-}
 
 module.exports = validRegistrationParameters;

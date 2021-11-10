@@ -4,13 +4,11 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import { constants, errors, routes } from "../Common";
 import { ToastsStore } from "react-toasts";
-import { useHistory } from "react-router-dom";
 
 export default function Settings() {
 	const token = localStorage.getItem(constants.TOKEN);
 	const [curPwd, setCurPwd] = useState("");
 	const [newPwd, setNewPwd] = useState("");
-	const history = useHistory();
 
 	const updatePassword = () => {
 		if (curPwd === constants.EMPTY) {
@@ -29,8 +27,9 @@ export default function Settings() {
 		};
 		axios.post(routes.UPDATE_PWD, data, { headers: { "Authorization": `Bearer ${token}` } })
 			.then((res) => {
-				history.push("/account/update");
+				ToastsStore.success("It worked lul");
 			}).catch((error) => {
+			console.log(error);
 			ToastsStore.error(error.response.data.error);
 		});
 

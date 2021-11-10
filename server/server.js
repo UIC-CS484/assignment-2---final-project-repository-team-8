@@ -6,6 +6,7 @@ const path = require("path");
 const passport = require("passport");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const validRegistrationParameters = require("./routes/registration");
+const validPasswordFormat = require("./routes/validPassword");
 const { messages, errors, query, routes, SECRET } = require("./common");
 const jwt = require("jsonwebtoken");
 const app = express();
