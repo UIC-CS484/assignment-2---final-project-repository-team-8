@@ -175,13 +175,8 @@ app.get(routes.SPOTIFY_AUTH, function(req, res) {
 
 app.post('/spotify/token', (req, res) => {
 
-//  Get the "code" value posted from the client-side and get the user's accessToken from the spotify api     
 	const code = req.body.code
-
-	// Retrieve an access token
 	spotifyApi.authorizationCodeGrant(code).then((data) => {
-
-		// Returning the User's AccessToken in the json formate  
 		res.json({
 			accessToken : data.body.access_token,
 		}) 
