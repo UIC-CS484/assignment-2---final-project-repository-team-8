@@ -5,7 +5,7 @@ const routes = {
 	TWEETS_FROM_USER: "/tweets/user/",
 	GET_ALL_TWEETS: "/tweets/all",
 	GET_WEATHER_API_KEY: "/api/weather",
-	UPDATE_PWD: "/account/update"
+	UPDATE_PASSWORD: "/account/update"
 
 };
 
@@ -14,8 +14,8 @@ const errors = {
 	EMAIL: "Please provide an email",
 	PASSWORD: "Please provide an password",
 	WEATHER: "Please provide a valid city or address",
-	CURPWD: "Please provide your current password",
-	NEWPWD: "Please provide a new password"
+	CURRENT_PASSWORD: "Please provide your current password",
+	NEW_PASSWORD: "Please provide a new password"
 };
 
 const constants = {

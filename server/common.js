@@ -49,7 +49,7 @@ const routes = {
 	TWEETS_FROM_USER: "/tweets/user/:email",
 	GET_ALL_TWEETS: "/tweets/all",
 	GET_WEATHER_API_KEY: "/api/weather",
-	UPDATE_PWD: "/account/update"
+	UPDATE_PASSWORD: "/account/update"
 };
 
 const SECRET = "Hello, world!";

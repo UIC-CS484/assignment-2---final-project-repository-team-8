@@ -6,16 +6,15 @@ import { constants, errors, routes } from "../Common";
 import { ToastsStore } from "react-toasts";
 
 export default function Settings() {
-	const token = localStorage.getItem(constants.TOKEN);
 	const [curPwd, setCurPwd] = useState("");
 	const [newPwd, setNewPwd] = useState("");
 
 	const updatePassword = () => {
 		if (curPwd === constants.EMPTY) {
-			ToastsStore.error(errors.CURPWD);
+			ToastsStore.error(errors.CURRENT_PASSWORD);
 			return;
 		} else if (newPwd === constants.EMPTY) {
-			ToastsStore.error(errors.NEWPWD);
+			ToastsStore.error(errors.NEW_PASSWORD);
 			return;
 		}
 
@@ -25,7 +24,9 @@ export default function Settings() {
 			newPassword: newPwd,
 			name: localStorage.getItem(constants.NAME)
 		};
-		axios.post(routes.UPDATE_PWD, data, { headers: { "Authorization": `Bearer ${token}` } })
+		const token = localStorage.getItem(constants.TOKEN);
+
+		axios.post(routes.UPDATE_PASSWORD, data, { headers: { "Authorization": `Bearer ${token}` } })
 			.then((res) => {
 				ToastsStore.success("It worked lul");
 			}).catch((error) => {

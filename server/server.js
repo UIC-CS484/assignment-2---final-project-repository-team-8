@@ -151,7 +151,7 @@ app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
 	})(req, res, next);
 });
 
-app.post(routes.UPDATE_PWD, async (req, res, next) => {
+app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 	passport.authenticate("jwt", { session: false }, (err, user, info) => {
 		const [ok, reason] = validPasswordFormat(req.body.newPassword);
 		if (!ok) {
