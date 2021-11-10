@@ -6,6 +6,7 @@ const routes = {
 	GET_ALL_TWEETS: "/tweets/all",
 	GET_WEATHER_API_KEY: "/api/weather",
 	UPDATE_PASSWORD: "/account/update"
+	REMOVE_ACCOUNT: "/account/remove"
 
 };
 

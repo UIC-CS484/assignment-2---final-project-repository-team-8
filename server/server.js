@@ -160,6 +160,33 @@ app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 			return;
 		}
 
+		const [ok_curr, reason_curr] = validPasswordFormat(req.body.currentPassword);
+		if (!ok_curr) {
+			console.log(reason_curr);
+			res.status(StatusCodes.BAD_REQUEST).json({ error: reason_curr });
+			return;
+		}
+
+		/* // unfinished
+		// check to see if the currentPassword listed, hashed, is the same as the one in the database
+		bcrypt.hash(req.body.currentPassword, saltRounds, function(hashErr, hash) {
+			if (hashErr) {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: messages.PASSWORD_UPDATE_FAIL });
+				return;
+			}
+
+			const params = req.body.email;
+			db.run(query.GET_PASSWORD, params, (dbErr, row) => {
+				if (dbErr) {
+					res.status(StatusCodes.CONFLICT).json({ error: messages.PASSWORD_DB_FAIL });
+				} else {
+					// password is retrieved from data base
+					// now compare it with the hashed currPassword
+				}
+			});
+		});
+		*/
+
 
 		bcrypt.hash(req.body.newPassword, saltRounds, function(hashErr, hash) {
 			if (hashErr) {
@@ -179,6 +206,7 @@ app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 		});
 	})(req, res, next);
 });
+
 
 // Open Weather API call
 app.get(routes.GET_WEATHER_API_KEY, async (err, res) => {

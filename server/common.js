@@ -16,7 +16,10 @@ const messages = {
 
 	PASSWORD_UPDATE_SUCCESS: "Successfully updated the password!",
 	PASSWORD_UPDATE_FAIL: "Unable to change password!",
-	PASSWORD_DB_FAIL: "Database error occurred when trying to update password!"
+	PASSWORD_DB_FAIL: "Database error occurred when trying to update password!",
+
+	PASSWORD_GET_DB_FAIL: "Database error occurred when trying to get password!",
+	PASSWORD_GET_SUCCESS: "Successfully received the password from database!"
 };
 
 const errors = {
@@ -49,7 +52,8 @@ const routes = {
 	TWEETS_FROM_USER: "/tweets/user/:email",
 	GET_ALL_TWEETS: "/tweets/all",
 	GET_WEATHER_API_KEY: "/api/weather",
-	UPDATE_PASSWORD: "/account/update"
+	UPDATE_PASSWORD: "/account/update",
+	REMOVE_ACCOUNT: "/account/remove"
 };
 
 const SECRET = "Hello, world!";
