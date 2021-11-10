@@ -39,8 +39,6 @@ class Home extends React.Component {
 				return
 			}
 
-			this.setState({ comment: '' });
-
 			axios.post(routes.TWEET, data, { headers: { "Authorization": `Bearer ${token}` } })
 				.then((res) => {
 					const tt = {
@@ -58,8 +56,7 @@ class Home extends React.Component {
 
 		const handleSubmit = (event) => {
 			event.preventDefault();
-		
-			this.setState({ comment: '' });
+			event.target.reset();
 		};
 
 		return (
@@ -72,9 +69,9 @@ class Home extends React.Component {
 
 				<ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_CENTER} />
 
-				<Form onSubmit={this.handleSubmit}>
+				<Form onSubmit={handleSubmit}>
 					<div className={"home__form"}>
-						<textarea class="tweet" value={this.state.comment} onChange={e => this.tweet = e.target.value} placeholder="What would you like to say today?" />
+						<textarea class="tweet" onChange={e => this.tweet = e.target.value} placeholder="What would you like to say today?" />
 					</div>
 
 					<div className={"home__tweetBtn"}>
