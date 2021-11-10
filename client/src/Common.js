@@ -2,7 +2,7 @@ const routes = {
 	REGISTER: "/account/register",
 	LOGIN: "/account/login",
 	TWEET: "/tweet",
-	TWEETS_FROM_USER: "/tweets/user",
+	TWEETS_FROM_USER: "/tweets/user/",
 	GET_ALL_TWEETS: "/tweets/all",
 	GET_WEATHER_API_KEY: "/api/weather",
 	SPOTIFY_AUTH: "/spotify/auth"
