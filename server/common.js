@@ -54,6 +54,9 @@ const routes = {
 
 const SECRET = "Hello, world!";
 
+const PASSWORD_FORMAT = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{5,}$/;
+
+module.exports.PASSWORD_FORMAT = PASSWORD_FORMAT;
 module.exports.SECRET = SECRET;
 module.exports.routes = routes;
 module.exports.query = query;

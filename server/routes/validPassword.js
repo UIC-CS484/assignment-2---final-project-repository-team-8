@@ -1,6 +1,5 @@
 const { messages } = require("../common");
-const PASSWORD_FORMAT = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{5,}$/;
-
+const PASSWORD_FORMAT = require("../common").PASSWORD_FORMAT;
 
 function validPasswordFormat(password) {
 	const passwordIsPresent = !!password;
