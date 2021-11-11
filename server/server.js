@@ -252,7 +252,6 @@ app.get(routes.GET_WEATHER_API_KEY, async (err, res) => {
 	}
 });
 
-
 var spotifyApi = new SpotifyWebApi({
 	clientId: process.env.SPOTIFY_API_ID,
 	clientSecret: process.env.SPOTIFY_API_SECRET,
