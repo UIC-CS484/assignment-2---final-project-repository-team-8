@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { constants, errors, routes } from "../../Common";
+import { routes } from "../../Common";
 
 export default function SpotifyAuth(code) {
 

@@ -6,7 +6,7 @@ const path = require("path");
 const passport = require("passport");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const validRegistrationParameters = require("./routes/registration");
-const { messages, errors, query, routes, SECRET } = require("./common");
+const { messages, errors, query, routes, SECRET, scopes } = require("./common");
 const jwt = require("jsonwebtoken");
 const app = express();
 const saltRounds = 10;
@@ -30,8 +30,6 @@ app.use(cookieParser("secretcode"));
 app.use(passport.initialize());
 app.use(passport.session());
 require("./passportConf")(passport);
-
-scopes = ['user-read-private', 'user-read-email','playlist-modify-public','playlist-modify-private', 'streaming', 'user-read-playback-state', 'user-read-currently-playing', 'user-modify-playback-state']
 
 //Sending over the api key
 require('dotenv').config()
