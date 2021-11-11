@@ -173,7 +173,7 @@ app.get(routes.SPOTIFY_AUTH, function(req, res) {
 	res.send(html+"&show_dialog=true")
 });
 
-app.post('/spotify/token', (req, res) => {
+app.post(routes.SPOTIFY_TOKEN, (req, res) => {
 
 	const code = req.body.code
 	spotifyApi.authorizationCodeGrant(code).then((data) => {
