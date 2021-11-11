@@ -33,8 +33,7 @@ export default function Settings() {
 
 		axios.post(routes.UPDATE_PASSWORD, data, { headers: { "Authorization": `Bearer ${token}` } })
 			.then((res) => {
-				console.log(res);
-				ToastsStore.success("yay");
+				ToastsStore.success(res.data.message);
 			}).catch((error) => {
 			ToastsStore.error(error.response.data.error);
 		});
