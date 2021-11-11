@@ -167,26 +167,30 @@ app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 			return;
 		}
 
-		/* // unfinished
 		// check to see if the currentPassword listed, hashed, is the same as the one in the database
-		bcrypt.hash(req.body.currentPassword, saltRounds, function(hashErr, hash) {
+		// store the query result
+		var hashed_password = "";
+		db.get(query.GET_PASSWORD, req.body.email, (dbErr, row) => {
+			if (dbErr) {
+				res.status(StatusCodes.CONFLICT).json({ message: messages.PASSWORD_UPDATE_FAIL });
+			} else {
+				hashed_password = row.password;
+			}
+		});
+
+		bcrypt.compare(req.body.currentPassword, hashed_password, function(hashErr, result) {
 			if (hashErr) {
-				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: messages.PASSWORD_UPDATE_FAIL });
+				res.status(StatusCodes.CONFLICT).json({ message: messages.PASSWORD_UPDATE_FAIL });
 				return;
 			}
+			console.log(result);
 
-			const params = req.body.email;
-			db.run(query.GET_PASSWORD, params, (dbErr, row) => {
-				if (dbErr) {
-					res.status(StatusCodes.CONFLICT).json({ error: messages.PASSWORD_DB_FAIL });
-				} else {
-					// password is retrieved from data base
-					// now compare it with the hashed currPassword
-				}
-			});
+			/*
+			if (!result) {
+				res.status(StatusCodes.CONFLICT).json({ message: messages.PASSWORD_NOT_MATCHED });
+				return;
+			}*/
 		});
-		*/
-
 
 		bcrypt.hash(req.body.newPassword, saltRounds, function(hashErr, hash) {
 			if (hashErr) {
@@ -207,17 +211,42 @@ app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 	})(req, res, next);
 });
 
-app.post(routes.REMOVE_ACCOUNT, async (err, res) => {
+app.post(routes.REMOVE_ACCOUNT, async (req, res, next) => {
 	passport.authenticate("jwt", { session: false }, (err, user, info) => {
 		// we have to take the two fields found in the front end
 		// make sure both fields are of the password of the user,
 		// by checking if they are the same, valid format, and is
 		// the actual password from database
 
-		// front end
-		// once we done those, we have to log out, delete the local storage
-		// 			localStorage.clear();
-		// 			history.push("/login");
+		// check if the passwords are the same
+		if (!req.body.enterPassword === req.body.confirmPassword) {
+			res.status(StatusCodes.BAD_REQUEST).json({ error: messages.PASSWORD_NOT_MATCHED });
+			return;
+		}
+
+		// once we confirm the user given the same password, now we have
+		const [ok_confirm, reason_confirm] = validPasswordFormat(req.body.confirmPassword);
+		if (!ok_confirm) {
+			res.status(StatusCodes.BAD_REQUEST).json({ error: reason_confirm });
+			return;
+		}
+		bcrypt.hash(req.body.confirmPassword, saltRounds, function(hashErr, hash) {
+			if (hashErr) {
+				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: messages.INCORRECT_PASSWORD });
+				return;
+			}
+
+			const params = [hash, req.body.email, req.body.name];
+			db.run(query.REMOVE_ACCOUNT, params, (dbErr, row) => {
+				if (dbErr) {
+					res.status(StatusCodes.CONFLICT).json({ error: messages.ACCOUNT_DELETED_FAIL });
+				} else {
+					res.status(StatusCodes.OK).json({ message: messages.ACCOUNT_DELETED_SUCCESS });
+				}
+			});
+
+
+		});
 
 	})(req, res, next);
 });

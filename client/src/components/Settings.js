@@ -4,6 +4,8 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import { constants, errors, routes } from "../Common";
 import { ToastsStore } from "react-toasts";
+import { useHistory } from "react-router-dom";
+
 
 export default function Settings() {
 	const [curPwd, setCurPwd] = useState("");

@@ -19,7 +19,11 @@ const messages = {
 	PASSWORD_DB_FAIL: "Database error occurred when trying to update password!",
 
 	PASSWORD_GET_DB_FAIL: "Database error occurred when trying to get password!",
-	PASSWORD_GET_SUCCESS: "Successfully received the password from database!"
+	PASSWORD_GET_SUCCESS: "Successfully received the password from database!",
+	PASSWORD_NOT_MATCHED: "Passwords do not match!",
+
+	ACCOUNT_DELETED_SUCCESS: "Account successfully deleted!",
+	ACCOUNT_DELETED_FAIL: "Account failed to be deleted, try again."
 };
 
 const errors = {
@@ -42,7 +46,8 @@ const query = {
 	CREATE_USER_TABLE: "CREATE TABLE IF NOT EXISTS user (email text PRIMARY KEY UNIQUE, password text, name text, CONSTRAINT email_unique UNIQUE (email))",
 	CREATE_TWEETS_TABLE: "CREATE TABLE IF NOT EXISTS tweets (email text, tweet text, timestamp integer)",
 
-	UPDATE_PASSWORD: "UPDATE user SET password = ? WHERE email = ? AND name = ?"
+	UPDATE_PASSWORD: "UPDATE user SET password = ? WHERE email = ? AND name = ?",
+	REMOVE_ACCOUNT: "DELETE FROM user WHERE password = ? AND email = ? AND name = ?"
 };
 
 const routes = {
