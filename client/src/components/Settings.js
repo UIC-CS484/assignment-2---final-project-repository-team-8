@@ -8,6 +8,7 @@ import { ToastsStore } from "react-toasts";
 export default function Settings() {
 	const [curPwd, setCurPwd] = useState("");
 	const [newPwd, setNewPwd] = useState("");
+	const history = useHistory();
 
 	const updatePassword = () => {
 		if (curPwd === constants.EMPTY) {
@@ -35,6 +36,35 @@ export default function Settings() {
 
 	};
 
+	const [enterPwd, setEnterPwd] = useState("");
+	const [confirmPwd, setConfirmPwd] = useState("");
+
+	const removeAccount = () => {
+		if (enterPwd === constants.EMPTY) {
+			ToastsStore.error(errors.CURRENT_PASSWORD);
+			return;
+		} else if (confirmPwd === constants.EMPTY) {
+			ToastsStore.error(errors.CURRENT_PASSWORD_AGAIN);
+			return;
+		}
+
+		const data = {
+			email: localStorage.getItem(constants.EMAIL),
+			name: localStorage.getItem(constants.NAME),
+			enterPassword: enterPwd,
+			confirmPassword: confirmPwd
+		};
+		const token = localStorage.getItem(constants.TOKEN);
+
+		axios.post(routes.REMOVE_ACCOUNT, data, { headers: { "Authorization": `Bearer ${token}` } })
+			.then((res) => {
+				localStorage.clear();
+				history.push("/login");
+			}).catch((error) => {
+			ToastsStore.error(error.response.data.error);
+		});
+	};
+
 	return <div className="account__container">
 		<NavBar />
 		<div className={"account__header"}>
@@ -55,12 +85,14 @@ export default function Settings() {
 		<div className="DeleteAcct">
 			Delete Account
 			<Form.Group className="mb-3" controlId="formPassword">
-				<Form.Control type="password" placeholder="Enter Password" />
+				<Form.Control onChange={e => setEnterPwd(e.target.value)} type="password"
+							  placeholder="Enter Password" />
 			</Form.Group>
 			<Form.Group className="mb-3" controlId="formConfirmPassword">
-				<Form.Control type="password" placeholder="Confirm Password" />
+				<Form.Control onChange={e => setConfirmPwd(e.target.value)} type="password"
+							  placeholder="Confirm Password" />
 			</Form.Group>
-			<button type="button" className="btn btn-primary btn-lg">Submit</button>
+			<button onClick={removeAccount} type="button" className="btn btn-primary btn-lg">Submit</button>
 		</div>
 	</div>;
 }

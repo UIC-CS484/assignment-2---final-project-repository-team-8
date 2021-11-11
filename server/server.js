@@ -207,6 +207,20 @@ app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 	})(req, res, next);
 });
 
+app.post(routes.REMOVE_ACCOUNT, async (err, res) => {
+	passport.authenticate("jwt", { session: false }, (err, user, info) => {
+		// we have to take the two fields found in the front end
+		// make sure both fields are of the password of the user,
+		// by checking if they are the same, valid format, and is
+		// the actual password from database
+
+		// front end
+		// once we done those, we have to log out, delete the local storage
+		// 			localStorage.clear();
+		// 			history.push("/login");
+
+	})(req, res, next);
+});
 
 // Open Weather API call
 app.get(routes.GET_WEATHER_API_KEY, async (err, res) => {
