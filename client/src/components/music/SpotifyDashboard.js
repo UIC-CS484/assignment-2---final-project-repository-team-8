@@ -12,18 +12,17 @@ import { constants, errors, routes } from "../../Common";
 
 export default function SpotifyDashboard(body) {
     
-    const spotifyApi = new SpotifyWebApi({
-        clientId: process.env.SPOTIFY_API_ID,
-        clientSecret: process.env.SPOTIFY_API_SECRET
-    })
-
     const accessToken = SpotifyAuth(body.code)
-    spotifyApi.setAccessToken(accessToken)
-
     const [search, setSearch] = useState("")
     const [searchResults, setSearchResults] = useState([])
     const [playingTrack, setPlayingTrack] = useState()
     const [lyrics, setLyrics] = useState("")
+    
+    const spotifyApi = new SpotifyWebApi({
+        clientId: process.env.SPOTIFY_API_ID,
+        clientSecret: process.env.SPOTIFY_API_SECRET
+    })
+    spotifyApi.setAccessToken(accessToken)
     
     function chooseTrack(track) {
         setPlayingTrack(track)

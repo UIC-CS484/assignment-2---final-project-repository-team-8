@@ -9,12 +9,11 @@ export default function SpotifyAuth(code) {
     useEffect(() => {
         axios.post(routes.SPOTIFY_LOGIN, { code })
             .then((response) => {
-            setAccessToken(response.data.accessToken);
-            window.history.pushState({}, null, "/spotify");
+              setAccessToken(response.data.accessToken);
+              window.history.pushState({}, null, "/spotify");
           })
           .catch(() => {
-              console.log()
-            window.location = "/home";
+              window.location = "/home";
           });
       }, [code]);
     

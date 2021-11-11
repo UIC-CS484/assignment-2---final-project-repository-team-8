@@ -4,17 +4,20 @@ export default function SpotifyTrack({ track, chooseTrack }) {
   function handlePlay() {
     chooseTrack(track)
   }
+  function changeBackground(e) {
+    e.target.style.background = '#3299cb';
+  }
+  function removeBackground(e) {
+    e.target.style.background = '';
+  }
 
   return (
-    <div
-      className="d-flex m-2 align-items-center"
-      style={{ cursor: "pointer" }}
-      onClick={handlePlay}
-    >
-      <img src={track.albumUrl} style={{ height: "64px", width: "64px" }} />
-      <div className="ml-3">
-        <div>{track.title}</div>
-        <div className="text-muted">{track.artist}</div>
+    <div className="d-inline-flex p-2" style={{ cursor: "pointer" }} onClick={handlePlay} onMouseOver={changeBackground} onMouseOut={removeBackground}>
+      <img src={track.albumUrl} style={{ height: "80px", width: "80px", display: 'inline-block', justifyContent: 'center'}} />
+      <div style={{display: 'inline-block'}} >
+        {/* <br/> */}
+        <div><b>&nbsp;{track.title}</b></div>
+        <div className="text-muted">&nbsp;{track.artist}</div>
       </div>
     </div>
   )
