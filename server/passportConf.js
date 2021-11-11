@@ -19,7 +19,7 @@ module.exports = function(passport) {
 					if (bcrypt.compareSync(password, row.password)) {
 						done(null, row);
 					} else {
-						done(errors.INCORRECT_PASSWORD, false);
+						// done(errors.INCORRECT_PASSWORD, false);
 					}
 				}
 			});

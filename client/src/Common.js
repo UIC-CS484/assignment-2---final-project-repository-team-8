@@ -17,7 +17,9 @@ const errors = {
 	WEATHER: "Please provide a valid city or address",
 	CURRENT_PASSWORD: "Please provide your current password",
 	NEW_PASSWORD: "Please provide a new password",
-	CURRENT_PASSWORD_AGAIN: "Please re-enter your current password again"
+	CURRENT_PASSWORD_AGAIN: "Please re-enter your current password again",
+	PASSWORD_NO_MATCH: "Passwords do not match",
+	PASSWORD_UPDATE_SAME: "Cannot update the password to current password"
 };
 
 const constants = {

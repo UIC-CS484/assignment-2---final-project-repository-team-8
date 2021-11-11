@@ -3,14 +3,14 @@ const messages = {
 	UNEXPECTED_ERROR: "Unexpected error. Please try again!",
 	USER_NOT_FOUND: "User not found...",
 	EMAIL_ALREADY_EXISTS: "Email already exists!",
-	INCORRECT_PASSWORD: "Passwords do not match!",
+	INCORRECT_PASSWORD: "Password is incorrect!",
 	REGISTRATION_FAILED: "Unable to register user. Please try again!",
 	REGISTRATION_SUCCEEDED: "Successfully registered the account!",
 	TWEET_SUBMITTED: "Successfully submitted a tweet!",
 	TWEET_FAILURE: "Unable to submit tweet!",
 	LOGIN_FAILED: "Login failed!",
 	LOGIN_SUCCEEDED: "Successfully authenticated the login!",
-	BAD_PASSWORD_FORMAT: "Passwords need at least one uppercase letter, one lowercase letter, and one number",
+	BAD_PASSWORD_FORMAT: "Passwords need at least one uppercase letter, one lowercase letter, one number, and length of 5",
 	BAD_EMAIL_FORMAT: "Please provide a valid email",
 	BAD_REGISTRATION_PARAMETERS: "Please provide a name, email, and password",
 
@@ -22,8 +22,10 @@ const messages = {
 	PASSWORD_GET_SUCCESS: "Successfully received the password from database!",
 	PASSWORD_NOT_MATCHED: "Passwords do not match!",
 
-	ACCOUNT_DELETED_SUCCESS: "Account successfully deleted!",
-	ACCOUNT_DELETED_FAIL: "Account failed to be deleted, try again."
+	ACCOUNT_DELETE_SUCCESS: "Account successfully deleted!",
+	ACCOUNT_DELETE_FAIL: "Account failed to be deleted, try again.",
+	TWEETS_DELETE_SUCCESS: "Tweets successfully deleted!",
+	TWEETS_DELETE_FAIL: "Tweets failed to be deleted, try again."
 };
 
 const errors = {
@@ -46,8 +48,9 @@ const query = {
 	CREATE_USER_TABLE: "CREATE TABLE IF NOT EXISTS user (email text PRIMARY KEY UNIQUE, password text, name text, CONSTRAINT email_unique UNIQUE (email))",
 	CREATE_TWEETS_TABLE: "CREATE TABLE IF NOT EXISTS tweets (email text, tweet text, timestamp integer)",
 
-	UPDATE_PASSWORD: "UPDATE user SET password = ? WHERE email = ? AND name = ?",
-	REMOVE_ACCOUNT: "DELETE FROM user WHERE password = ? AND email = ? AND name = ?"
+	UPDATE_PASSWORD: "UPDATE user SET password = ? WHERE email = ?",
+	REMOVE_ACCOUNT: "DELETE FROM user WHERE email = ? AND name = ?",
+	REMOVE_ACCOUNT_TWEETS: "DELETE FROM tweets WHERE email = ?"
 };
 
 const routes = {

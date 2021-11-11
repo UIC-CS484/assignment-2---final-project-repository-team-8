@@ -152,102 +152,93 @@ app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
 });
 
 app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
-	passport.authenticate("jwt", { session: false }, (err, user, info) => {
-		const [ok, reason] = validPasswordFormat(req.body.newPassword);
-		if (!ok) {
-			console.log(reason);
-			res.status(StatusCodes.BAD_REQUEST).json({ error: reason });
-			return;
-		}
-
-		const [ok_curr, reason_curr] = validPasswordFormat(req.body.currentPassword);
-		if (!ok_curr) {
-			console.log(reason_curr);
-			res.status(StatusCodes.BAD_REQUEST).json({ error: reason_curr });
-			return;
-		}
-
-		// check to see if the currentPassword listed, hashed, is the same as the one in the database
-		// store the query result
-		var hashed_password = "";
-		db.get(query.GET_PASSWORD, req.body.email, (dbErr, row) => {
-			if (dbErr) {
-				res.status(StatusCodes.CONFLICT).json({ message: messages.PASSWORD_UPDATE_FAIL });
-			} else {
-				hashed_password = row.password;
+	passport.authenticate("local", (err, user, info) => {
+		console.log(user)
+		if(err){
+			let status, msg;
+			switch (err) {
+				case errors.INCORRECT_PASSWORD:
+					status = StatusCodes.UNAUTHORIZED;
+					msg = messages.INCORRECT_PASSWORD;
+					break;
+				default:
+					status = StatusCodes.INTERNAL_SERVER_ERROR;
+					msg = messages.UNEXPECTED_ERROR;
 			}
-		});
-
-		bcrypt.compare(req.body.currentPassword, hashed_password, function(hashErr, result) {
-			if (hashErr) {
-				res.status(StatusCodes.CONFLICT).json({ message: messages.PASSWORD_UPDATE_FAIL });
-				return;
-			}
-			console.log(result);
-
-			/*
-			if (!result) {
-				res.status(StatusCodes.CONFLICT).json({ message: messages.PASSWORD_NOT_MATCHED });
-				return;
-			}*/
-		});
-
-		bcrypt.hash(req.body.newPassword, saltRounds, function(hashErr, hash) {
-			if (hashErr) {
-				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: messages.PASSWORD_UPDATE_FAIL });
+			res.status(status).json({ error: msg });
+		} else if (!user) {
+			res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
+		} else{
+			const [valid, error] = validPasswordFormat(req.body.newPassword);
+			if (!valid) {
+				console.log(error);
+				res.status(StatusCodes.BAD_REQUEST).json({ error: error });
 				return;
 			}
 
-
-			const params = [hash, req.body.email, req.body.name];
-			db.run(query.UPDATE_PASSWORD, params, (dbErr, row) => {
-				if (dbErr) {
-					res.status(StatusCodes.CONFLICT).json({ error: messages.PASSWORD_DB_FAIL });
-				} else {
-					res.status(StatusCodes.OK).json({ message: messages.PASSWORD_UPDATE_SUCCESS });
+			bcrypt.hash(req.body.newPassword, saltRounds, function(hashErr, hash) {
+				if (hashErr) {
+					res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: messages.REGISTRATION_FAILED });
+					return;
 				}
+		
+				const params = [hash, user.email];
+				db.run(query.UPDATE_PASSWORD, params, (dbErr, row) => {
+					if (dbErr) {
+						res.status(StatusCodes.CONFLICT).json({ error: messages.PASSWORD_UPDATE_FAIL });
+					} else {
+						res.status(StatusCodes.OK).json({ message: messages.PASSWORD_UPDATE_SUCCESS });
+					}
+				});
 			});
-		});
+		}
 	})(req, res, next);
 });
 
 app.post(routes.REMOVE_ACCOUNT, async (req, res, next) => {
-	passport.authenticate("jwt", { session: false }, (err, user, info) => {
-		// we have to take the two fields found in the front end
-		// make sure both fields are of the password of the user,
-		// by checking if they are the same, valid format, and is
-		// the actual password from database
+	passport.authenticate("local", (err, user, info) => {
 
-		// check if the passwords are the same
-		if (!req.body.enterPassword === req.body.confirmPassword) {
+		if (req.body.password != req.body.confirmPassword) {
 			res.status(StatusCodes.BAD_REQUEST).json({ error: messages.PASSWORD_NOT_MATCHED });
 			return;
 		}
 
-		// once we confirm the user given the same password, now we have
-		const [ok_confirm, reason_confirm] = validPasswordFormat(req.body.confirmPassword);
-		if (!ok_confirm) {
-			res.status(StatusCodes.BAD_REQUEST).json({ error: reason_confirm });
-			return;
-		}
-		bcrypt.hash(req.body.confirmPassword, saltRounds, function(hashErr, hash) {
-			if (hashErr) {
-				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: messages.INCORRECT_PASSWORD });
-				return;
+		if(err){
+			let status, msg;
+			switch (err) {
+				case errors.INCORRECT_PASSWORD:
+					status = StatusCodes.UNAUTHORIZED;
+					msg = messages.INCORRECT_PASSWORD;
+					break;
+				default:
+					status = StatusCodes.INTERNAL_SERVER_ERROR;
+					msg = messages.UNEXPECTED_ERROR;
 			}
-
-			const params = [hash, req.body.email, req.body.name];
-			db.run(query.REMOVE_ACCOUNT, params, (dbErr, row) => {
+			res.status(status).json({ error: msg });
+		} else if (!user) {
+			res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
+		} else {
+			const userParams = [user.email, user.name];
+			const tweetParams = [user.email];
+			
+			//Deleting user
+			db.run(query.REMOVE_ACCOUNT, userParams, (dbErr, row) => {
 				if (dbErr) {
-					res.status(StatusCodes.CONFLICT).json({ error: messages.ACCOUNT_DELETED_FAIL });
+					res.status(StatusCodes.CONFLICT).json({ error: messages.ACCOUNT_DELETE_FAIL });
 				} else {
-					res.status(StatusCodes.OK).json({ message: messages.ACCOUNT_DELETED_SUCCESS });
+					res.status(StatusCodes.OK).json({ message: messages.ACCOUNT_DELETE_SUCCESS });
 				}
 			});
 
-
-		});
-
+			//Deleting tweets of user
+			db.run(query.REMOVE_ACCOUNT_TWEETS, tweetParams, (dbErr, row) => {
+				if (dbErr) {
+					res.status(StatusCodes.CONFLICT).json({ error: messages.TWEETS_DELETE_SUCCESS });
+				} else {
+					res.status(StatusCodes.OK).json({ message: messages.TWEETS_DELETE_FAIL });
+				}
+			});
+		}
 	})(req, res, next);
 });
 
