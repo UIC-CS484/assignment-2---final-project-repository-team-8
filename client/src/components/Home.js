@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { constants, routes } from "../Common";
-import { ToastsStore } from "react-toasts";
+import { ToastsContainer, ToastsContainerPosition, ToastsStore } from "react-toasts";
 import NavBar from "./NavBar";
 import TweetColumn from "./TweetColumn";
 
@@ -13,7 +13,7 @@ class Home extends React.Component {
 		super();
 		this.tweet = "";
 		this.tweets = [];
-		this.state = "hello";
+		this.state = "";
 	}
 
 	componentWillMount() {
@@ -33,6 +33,12 @@ class Home extends React.Component {
 			const data = {
 				tweet: this.tweet
 			};
+			
+			if(!data.tweet){
+				ToastsStore.error("Nothing to Pweet");
+				return
+			}
+
 			axios.post(routes.TWEET, data, { headers: { "Authorization": `Bearer ${token}` } })
 				.then((res) => {
 					const tt = {
@@ -48,15 +54,22 @@ class Home extends React.Component {
 			});
 		};
 
+		const handleSubmit = (event) => {
+			event.preventDefault();
+			event.target.reset();
+		};
+
 		return (
 			<div className="home__container">
 				<NavBar />
-
+				
 				<div className={"home__header"}>
 					<h1> Welcome to Pwitter! </h1>
 				</div>
 
-				<Form onSubmit={ev => { ev.preventDefault(); }}>
+				<ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_CENTER} />
+
+				<Form onSubmit={handleSubmit}>
 					<div className={"home__form"}>
 						<textarea class="tweet" onChange={e => this.tweet = e.target.value} placeholder="What would you like to say today?" />
 					</div>

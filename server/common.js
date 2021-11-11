@@ -43,10 +43,16 @@ const routes = {
 	TWEETS_FROM_USER: "/tweets/user/:email",
 	GET_ALL_TWEETS: "/tweets/all",
 	GET_WEATHER_API_KEY: "/api/weather",
+	SPOTIFY_AUTH: "/spotify/auth",
+	SPOTIFY_LOGIN: "/spotify/login",
+	SPOTIFY_LYRICS: "/spotify/lyrics"
 };
 
 const SECRET = "Hello, world!";
 
+scopes = ['user-read-private', 'user-read-email','playlist-modify-public','playlist-modify-private', 'streaming', 'user-read-playback-state', 'user-read-currently-playing', 'user-modify-playback-state']
+
+module.exports.scopes = scopes;
 module.exports.SECRET = SECRET;
 module.exports.routes = routes;
 module.exports.query = query;
