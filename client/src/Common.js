@@ -7,7 +7,9 @@ const routes = {
 	GET_WEATHER_API_KEY: "/api/weather",
 	UPDATE_PASSWORD: "/account/update",
 	REMOVE_ACCOUNT: "/account/remove"
-
+	SPOTIFY_AUTH: "/spotify/auth",
+	SPOTIFY_LOGIN: "/spotify/login",
+	SPOTIFY_LYRICS: "/spotify/lyrics"
 };
 
 const errors = {

@@ -7,12 +7,15 @@ const passport = require("passport");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const validRegistrationParameters = require("./routes/registration");
 const validPasswordFormat = require("./routes/validPassword");
-const { messages, errors, query, routes, SECRET } = require("./common");
+const { messages, errors, query, routes, SECRET, scopes } = require("./common");
 const jwt = require("jsonwebtoken");
 const app = express();
 const saltRounds = 10;
 const port = process.env.NODE_ENV === "test" ? 8081 : 8080;
 const db = require("./database.js").db;
+const querystring = require('querystring');
+var SpotifyWebApi = require('spotify-web-api-node');
+const lyricsFinder = require("lyrics-finder")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -248,6 +251,36 @@ app.get(routes.GET_WEATHER_API_KEY, async (err, res) => {
 		res.status(StatusCodes.OK).json(process.env.REACT_APP_WEATHER_API_KEY);
 	}
 });
+
+
+var spotifyApi = new SpotifyWebApi({
+	clientId: process.env.SPOTIFY_API_ID,
+	clientSecret: process.env.SPOTIFY_API_SECRET,
+	redirectUri: process.env.REDIRECT_URL
+});
+
+app.get(routes.SPOTIFY_AUTH, function(req, res) {
+	var html = spotifyApi.createAuthorizeURL(scopes)
+	res.send(html+"&show_dialog=true")
+});
+
+app.post(routes.SPOTIFY_LOGIN, (req, res) => {
+	const code = req.body.code
+	spotifyApi.authorizationCodeGrant(code).then((data) => {
+		res.json({
+			accessToken : data.body.access_token,
+		}) 
+	})
+	.catch((err) => {
+		console.log(err);
+		res.sendStatus(400)
+	})
+})
+
+app.get(routes.SPOTIFY_LYRICS, async (req, res) => {
+	const lyrics = (await lyricsFinder(req.query.artist, req.query.track)) || "No Lyrics Found"
+	res.json({ lyrics })
+})
 
 module.exports.app = app;
 module.exports.routes = routes;

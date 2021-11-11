@@ -5,10 +5,10 @@ import "./style/Tweet.scss";
 const Tweet = ({ data }) => {
 	const date = new Date(data.timestamp).toDateString();
 	return (
-		<div className={"tweet__container"}>
+		<div className={"pweet__container"}>
 			<Link to={"/profile/" + data.email}>{data.name}</Link> on {date}:
 			<br />
-			<b> {data.tweet}</b>
+			<div className="pweet__user"><b> {data.tweet}</b></div>
 		</div>
 	);
 };
