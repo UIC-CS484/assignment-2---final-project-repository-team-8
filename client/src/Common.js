@@ -10,18 +10,18 @@ const routes = {
 };
 
 const errors = {
-	NAME: "Please provide a name",
-	EMAIL: "Please provide an email",
-	PASSWORD: "Please provide an password",
-	WEATHER: "Please provide a valid city or address"
+    NAME: "Please provide a name",
+    EMAIL: "Please provide an email",
+    PASSWORD: "Please provide an password",
+    WEATHER: "Please provide a valid city or address"
 };
 
 const constants = {
-	EMAIL: "email",
-	NAME: "name",
-	TOKEN: "token",
-	SECRET: "Hello, world!",
-	EMPTY: ""
+    EMAIL: "email",
+    NAME: "name",
+    TOKEN: "token",
+    SECRET: "Hello, world!",
+    EMPTY: ""
 };
 
 module.exports.constants = constants;
