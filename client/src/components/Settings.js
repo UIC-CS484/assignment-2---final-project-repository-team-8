@@ -77,34 +77,38 @@ export default function Settings() {
 	};
 
 	return (
-		<div className="account__container">
+		<div className="login">
 			<ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_CENTER} />
 			<NavBar />
 			<div className={"account__header"}>
 				<h1> Account Management </h1>
 			</div>
-			<div className="UpdatePwd">
-				Update Password
-				<Form.Group className="mb-3" controlId="formCurPassword">
-					<Form.Control onChange={e => setCurPwd(e.target.value)} type="password" placeholder="Enter Current Password" />
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="formNewPassword">
-					<Form.Control onChange={e => setNewPwd(e.target.value)} type="password" placeholder="Enter New Password" />
-				</Form.Group>
-				<button onClick={updatePassword} type="button" className="btn btn-primary btn-lg">Update</button>
-			</div>
 			<br/>
-			<div className="DeleteAcct">
-				Delete Account
-				<Form.Group className="mb-3" controlId="formPassword">
-					<Form.Control onChange={e => setEnterPwd(e.target.value)} type="password" placeholder="Enter Password" />
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="formConfirmPassword">
-					<Form.Control onChange={e => setConfirmPwd(e.target.value)} type="password" placeholder="Confirm Password" />
-				</Form.Group>
-				<button onClick={removeAccount} type="button" className="btn btn-primary btn-lg">Submit</button>
-			</div>
-
+			<Form onSubmit={ev => {
+				ev.preventDefault();
+			}}>
+				<div className="UpdatePwd">
+					Update Password
+					<Form.Group className="mb-3" controlId="formCurPassword">
+						<Form.Control onChange={e => setCurPwd(e.target.value)} type="password" placeholder="Enter Current Password" />
+					</Form.Group>
+					<Form.Group className="mb-3" controlId="formNewPassword">
+						<Form.Control onChange={e => setNewPwd(e.target.value)} type="password" placeholder="Enter New Password" />
+					</Form.Group>
+					<button onClick={updatePassword} type="button" className="btn btn-primary btn-lg">Update</button>
+				</div>
+				<br/>
+				<div className="DeleteAcct">
+					Delete Account
+					<Form.Group className="mb-3" controlId="formPassword">
+						<Form.Control onChange={e => setEnterPwd(e.target.value)} type="password" placeholder="Enter Password" />
+					</Form.Group>
+					<Form.Group className="mb-3" controlId="formConfirmPassword">
+						<Form.Control onChange={e => setConfirmPwd(e.target.value)} type="password" placeholder="Confirm Password" />
+					</Form.Group>
+					<button onClick={removeAccount} type="button" className="btn btn-primary btn-lg">Submit</button>
+				</div>
+			</Form>
 		</div>
 	)
 }
