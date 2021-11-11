@@ -44,7 +44,8 @@ const routes = {
 	GET_ALL_TWEETS: "/tweets/all",
 	GET_WEATHER_API_KEY: "/api/weather",
 	SPOTIFY_AUTH: "/spotify/auth",
-	SPOTIFY_TOKEN: "/spotify/token"
+	SPOTIFY_LOGIN: "/spotify/login",
+	SPOTIFY_LYRICS: "/spotify/lyrics"
 };
 
 const SECRET = "Hello, world!";

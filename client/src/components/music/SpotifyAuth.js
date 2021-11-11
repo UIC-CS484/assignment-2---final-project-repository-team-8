@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { constants, errors, routes } from "../../Common";
 
 export default function SpotifyAuth(code) {
 
-    React.useEffect(() => {
-        axios.post(routes.SPOTIFY_TOKEN)
-                .then((res) => {
-                    console.log(res)
-                    // setRedirect(res.data)
-                }).catch((error) => {
-                    console.log(error)
-            });
-    }, []);
+    const [accessToken, setAccessToken] = useState();
 
-    return (
-        <div></div>
-    )
+    useEffect(() => {
+        axios.post(routes.SPOTIFY_LOGIN, { code })
+            .then((response) => {
+            setAccessToken(response.data.accessToken);
+            window.history.pushState({}, null, "/spotify");
+          })
+          .catch(() => {
+              console.log()
+            window.location = "/home";
+          });
+      }, [code]);
+    
+      return accessToken
 }
