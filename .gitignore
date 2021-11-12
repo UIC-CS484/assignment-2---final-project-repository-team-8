@@ -6,4 +6,3 @@ node_modules
 db.sqlite
 db-test.sqlite
 client/build
-.env
