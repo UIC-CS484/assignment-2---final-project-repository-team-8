@@ -46,8 +46,12 @@ module.exports = function(passport) {
 		return done(null, user.email);
 	});
 	passport.deserializeUser((email, done) => {
-		db.get(query.GET_EMAIL, email, function(err, user) {
-			return done(err, user);
+		db.get(query.GET_EMAIL, email, function(err, row) {
+			if(!row){
+				return done(null, false);
+			}else{
+				return done(err, row);
+			}
 		});
 	});
 };
