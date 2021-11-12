@@ -36,6 +36,11 @@ $ npm start
 
 Once the server is running, you can navigate to [http://localhost:3000/](http://localhost:3000/) to use the application.
 
+## ER Diagram
+![ERDiagram](ERDiagram.png)
+
+
+
 ## Testing
 
 ### Unit-Testing
