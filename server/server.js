@@ -247,7 +247,6 @@ app.post(routes.REMOVE_ACCOUNT, async (req, res, next) => {
 							res.status(StatusCodes.OK).json({ message: messages.TWEETS_DELETE_FAIL });
 							return;
 						} else {
-							console.log("deleted")
 							res.status(StatusCodes.CONFLICT).json({ error: messages.TWEETS_DELETE_SUCCESS });
 							return;
 						}
