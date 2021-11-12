@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react"
-import SpotifyAuth from './SpotifyAuth'
-import SpotifyPlayer from "./SpotifyPlayer"
-import SpotifyTrack from "./SpotifyTrack"
-import { Form } from "react-bootstrap"
-import SpotifyWebApi from "spotify-web-api-node"
+import { useState, useEffect } from "react";
+import SpotifyAuth from './SpotifyAuth';
+import SpotifyPlayer from "./SpotifyPlayer";
+import SpotifyTrack from "./SpotifyTrack";
+import SpotifyArtistChart from "./SpotifyArtistChart";
+import { Form } from "react-bootstrap";
+import SpotifyWebApi from "spotify-web-api-node";
 import "../style/Home.scss";
 import NavBar from "../NavBar";
+import axios from "axios";
 
-import axios from "axios"
 import { constants, errors, routes } from "../../Common";
 
 export default function SpotifyDashboard(body) {
@@ -17,13 +18,17 @@ export default function SpotifyDashboard(body) {
     const [searchResults, setSearchResults] = useState([])
     const [playingTrack, setPlayingTrack] = useState()
     const [lyrics, setLyrics] = useState("")
+    const [topArtists, setTopArtists] = useState([]);
     
-    const spotifyApi = new SpotifyWebApi({
-        clientId: process.env.SPOTIFY_API_ID,
-        clientSecret: process.env.SPOTIFY_API_SECRET
-    })
-    spotifyApi.setAccessToken(accessToken)
     
+    // const spotifyApi = new SpotifyWebApi({
+    //     clientId: process.env.SPOTIFY_API_ID,
+    //     clientSecret: process.env.SPOTIFY_API_SECRET
+    // })
+
+    var spotifyApi = new SpotifyWebApi();
+    spotifyApi.setAccessToken(accessToken);
+
     function chooseTrack(track) {
         setPlayingTrack(track)
         setSearch("")
@@ -46,7 +51,7 @@ export default function SpotifyDashboard(body) {
     useEffect(() => {
         if (!search) return setSearchResults([])
         if (!accessToken) return
-
+        spotifyApi.setAccessToken(accessToken);
         let cancel = false
         spotifyApi.searchTracks(search).then(res => {
             if (cancel) return
@@ -66,11 +71,9 @@ export default function SpotifyDashboard(body) {
                 uri: track.uri,
                 albumUrl: smallestAlbumImage.url,
                 }
-            })
-        )
-    })
-
-    return () => (cancel = true)
+            }))
+        })
+        return () => (cancel = true)
     }, [search, accessToken])
 
     return (
@@ -84,6 +87,7 @@ export default function SpotifyDashboard(body) {
             onChange={e => setSearch(e.target.value)}
         />
         <SpotifyPlayer accessToken={accessToken} trackUri={playingTrack?.uri} />
+        <SpotifyArtistChart accessToken={accessToken}  />
         <br />
         <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
             {searchResults.map(track => (

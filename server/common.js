@@ -71,7 +71,7 @@ const routes = {
 const SECRET = "Hello, world!";
 
 const PASSWORD_FORMAT = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{5,}$/;
-scopes = ['user-read-private', 'user-read-email','playlist-modify-public','playlist-modify-private', 'streaming', 'user-read-playback-state', 'user-read-currently-playing', 'user-modify-playback-state', 'user-top-read']
+scopes = ['playlist-read-private', 'user-read-private', 'user-read-email','playlist-modify-public','playlist-modify-private', 'streaming', 'user-read-playback-state', 'user-read-currently-playing', 'user-modify-playback-state', 'user-top-read']
 
 module.exports.PASSWORD_FORMAT = PASSWORD_FORMAT;
 module.exports.scopes = scopes;
