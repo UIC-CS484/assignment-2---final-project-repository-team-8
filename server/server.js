@@ -6,6 +6,7 @@ const path = require("path");
 const passport = require("passport");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const validRegistrationParameters = require("./routes/registration");
+const validPasswordFormat = require("./routes/validPassword");
 const { messages, errors, query, routes, SECRET, scopes } = require("./common");
 const jwt = require("jsonwebtoken");
 const app = express();
@@ -32,7 +33,7 @@ app.use(passport.session());
 require("./passportConf")(passport);
 
 //Sending over the api key
-require('dotenv').config()
+require("dotenv").config();
 
 // app.use(express.static(path.resolve(__dirname, "../client/build")));
 
@@ -153,13 +154,112 @@ app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
 	})(req, res, next);
 });
 
+app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
+	passport.authenticate("local", (err, user, info) => {
+		console.log(user)
+		if(err){
+			let status, msg;
+			switch (err) {
+				case errors.INCORRECT_PASSWORD:
+					status = StatusCodes.UNAUTHORIZED;
+					msg = messages.INCORRECT_PASSWORD;
+					break;
+				default:
+					status = StatusCodes.INTERNAL_SERVER_ERROR;
+					msg = messages.UNEXPECTED_ERROR;
+			}
+			res.status(status).json({ error: msg });
+			return;
+		} else if (!user) {
+			res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
+			return;
+		} else{
+			const [valid, error] = validPasswordFormat(req.body.newPassword);
+			if (!valid) {
+				console.log(error);
+				res.status(StatusCodes.BAD_REQUEST).json({ error: error });
+				return;
+			}
+
+			bcrypt.hash(req.body.newPassword, saltRounds, function(hashErr, hash) {
+				if (hashErr) {
+					res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: messages.REGISTRATION_FAILED });
+					return;
+				}
+		
+				const params = [hash, user.email];
+				db.run(query.UPDATE_PASSWORD, params, (dbErr, row) => {
+					if (dbErr) {
+						res.status(StatusCodes.CONFLICT).json({ error: messages.PASSWORD_UPDATE_FAIL });
+						return;
+					} else {
+						res.status(StatusCodes.OK).json({ message: messages.PASSWORD_UPDATE_SUCCESS });
+						return;
+					}
+				});
+			});
+		}
+	})(req, res, next);
+});
+
+app.post(routes.REMOVE_ACCOUNT, async (req, res, next) => {
+	passport.authenticate("local", (err, user, info) => {
+
+		if (req.body.password != req.body.confirmPassword) {
+			res.status(StatusCodes.BAD_REQUEST).json({ error: messages.PASSWORD_NOT_MATCHED });
+			return;
+		}
+
+		if(err){
+			let status, msg;
+			switch (err) {
+				case errors.INCORRECT_PASSWORD:
+					status = StatusCodes.UNAUTHORIZED;
+					msg = messages.INCORRECT_PASSWORD;
+					break;
+				default:
+					status = StatusCodes.INTERNAL_SERVER_ERROR;
+					msg = messages.UNEXPECTED_ERROR;
+			}
+			res.status(status).json({ error: msg });
+			return;
+		} else if (!user) {
+			res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
+			return;
+		} else {
+			const params = [user.email];
+			
+			//Deleting user
+			db.run(query.REMOVE_ACCOUNT, params, (dbErr, row) => {
+				if (dbErr) {
+					res.status(StatusCodes.CONFLICT).json({ error: messages.ACCOUNT_DELETE_FAIL });
+					return;
+				} else {
+					res.status(StatusCodes.OK).json({ message: messages.ACCOUNT_DELETE_SUCCESS });
+					return;
+				}
+			});
+
+			//Deleting tweets of user
+			db.run(query.REMOVE_ACCOUNT_TWEETS, params, (dbErr, row) => {
+				if (dbErr) {
+					res.status(StatusCodes.CONFLICT).json({ error: messages.TWEETS_DELETE_SUCCESS });
+					return;
+				} else {
+					res.status(StatusCodes.OK).json({ message: messages.TWEETS_DELETE_FAIL });
+					return;
+				}
+			});
+		}
+	})(req, res, next);
+});
+
 // Open Weather API call
 app.get(routes.GET_WEATHER_API_KEY, async (err, res) => {
 	if (res) {
 		res.status(StatusCodes.OK).json(process.env.REACT_APP_WEATHER_API_KEY);
 	}
 });
-
 
 var spotifyApi = new SpotifyWebApi({
 	clientId: process.env.SPOTIFY_API_ID,

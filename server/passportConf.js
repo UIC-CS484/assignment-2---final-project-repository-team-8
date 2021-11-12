@@ -14,12 +14,12 @@ module.exports = function(passport) {
 				if (err) {
 					throw err;
 				} else if (!row) {
-					done(errors.USER_NOT_FOUND, false);
+					return done(errors.USER_NOT_FOUND, false);
 				} else {
 					if (bcrypt.compareSync(password, row.password)) {
-						done(null, row);
+						return done(null, row);
 					} else {
-						done(errors.INCORRECT_PASSWORD, false);
+						return done(errors.INCORRECT_PASSWORD, false);
 					}
 				}
 			});
@@ -43,11 +43,11 @@ module.exports = function(passport) {
 	}));
 
 	passport.serializeUser((user, done) => {
-		done(null, user.email);
+		return done(null, user.email);
 	});
 	passport.deserializeUser((email, done) => {
 		db.get(query.GET_EMAIL, email, function(err, user) {
-			done(err, user);
+			return done(err, user);
 		});
 	});
 };
