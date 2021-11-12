@@ -240,14 +240,17 @@ app.post(routes.REMOVE_ACCOUNT, async (req, res, next) => {
 				}
 			});
 
-			//Deleting tweets of user
-			db.run(query.REMOVE_ACCOUNT_TWEETS, params, (dbErr, row) => {
-				if (dbErr) {
-					res.status(StatusCodes.CONFLICT).json({ error: messages.TWEETS_DELETE_SUCCESS });
-					return;
-				} else {
-					res.status(StatusCodes.OK).json({ message: messages.TWEETS_DELETE_FAIL });
-					return;
+			db.run(query.GET_USER_TWEETS, params, (dbErr, row) => {
+				if (row) {
+					db.run(query.REMOVE_ACCOUNT_TWEETS, params, (err, row) => {
+						if (err) {
+							res.status(StatusCodes.OK).json({ message: messages.TWEETS_DELETE_FAIL });
+							return;
+						} else {
+							res.status(StatusCodes.CONFLICT).json({ error: messages.TWEETS_DELETE_SUCCESS });
+							return;
+						}
+					});
 				}
 			});
 		}

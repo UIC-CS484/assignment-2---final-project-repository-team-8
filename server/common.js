@@ -50,7 +50,8 @@ const query = {
 
 	UPDATE_PASSWORD: "UPDATE user SET password = ? WHERE email = ?",
 	REMOVE_ACCOUNT: "DELETE FROM user WHERE email = ?",
-	REMOVE_ACCOUNT_TWEETS: "DELETE FROM tweets WHERE email = ?"
+	REMOVE_ACCOUNT_TWEETS: "DELETE FROM tweets WHERE email = ?",
+	GET_USER_TWEETS: "SELECT * FROM tweets WHERE email = ?"
 };
 
 const routes = {
