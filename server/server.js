@@ -169,8 +169,10 @@ app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 					msg = messages.UNEXPECTED_ERROR;
 			}
 			res.status(status).json({ error: msg });
+			return;
 		} else if (!user) {
 			res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
+			return;
 		} else{
 			const [valid, error] = validPasswordFormat(req.body.newPassword);
 			if (!valid) {
@@ -189,8 +191,10 @@ app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 				db.run(query.UPDATE_PASSWORD, params, (dbErr, row) => {
 					if (dbErr) {
 						res.status(StatusCodes.CONFLICT).json({ error: messages.PASSWORD_UPDATE_FAIL });
+						return;
 					} else {
 						res.status(StatusCodes.OK).json({ message: messages.PASSWORD_UPDATE_SUCCESS });
+						return;
 					}
 				});
 			});
@@ -218,27 +222,32 @@ app.post(routes.REMOVE_ACCOUNT, async (req, res, next) => {
 					msg = messages.UNEXPECTED_ERROR;
 			}
 			res.status(status).json({ error: msg });
+			return;
 		} else if (!user) {
 			res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
+			return;
 		} else {
-			const userParams = [user.email, user.name];
-			const tweetParams = [user.email];
+			const params = [user.email];
 			
 			//Deleting user
-			db.run(query.REMOVE_ACCOUNT, userParams, (dbErr, row) => {
+			db.run(query.REMOVE_ACCOUNT, params, (dbErr, row) => {
 				if (dbErr) {
 					res.status(StatusCodes.CONFLICT).json({ error: messages.ACCOUNT_DELETE_FAIL });
+					return;
 				} else {
 					res.status(StatusCodes.OK).json({ message: messages.ACCOUNT_DELETE_SUCCESS });
+					return;
 				}
 			});
 
 			//Deleting tweets of user
-			db.run(query.REMOVE_ACCOUNT_TWEETS, tweetParams, (dbErr, row) => {
+			db.run(query.REMOVE_ACCOUNT_TWEETS, params, (dbErr, row) => {
 				if (dbErr) {
 					res.status(StatusCodes.CONFLICT).json({ error: messages.TWEETS_DELETE_SUCCESS });
+					return;
 				} else {
 					res.status(StatusCodes.OK).json({ message: messages.TWEETS_DELETE_FAIL });
+					return;
 				}
 			});
 		}

@@ -50,15 +50,13 @@ export default function Settings() {
 		} else if (confirmPwd === constants.EMPTY) {
 			ToastsStore.error(errors.CURRENT_PASSWORD_AGAIN);
 			return;
-		} 
-		// else if (enterPwd != confirmPwd) {
-		// 	ToastsStore.error(errors.PASSWORD_NO_MATCH);
-		// 	return;
-		// }
+		} else if (enterPwd != confirmPwd) {
+			ToastsStore.error(errors.PASSWORD_NO_MATCH);
+			return;
+		}
 
 		const data = {
 			email: localStorage.getItem(constants.EMAIL),
-			name: localStorage.getItem(constants.NAME),
 			password: enterPwd,
 			confirmPassword: confirmPwd
 		};

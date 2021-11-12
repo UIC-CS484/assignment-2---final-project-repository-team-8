@@ -49,7 +49,7 @@ const query = {
 	CREATE_TWEETS_TABLE: "CREATE TABLE IF NOT EXISTS tweets (email text, tweet text, timestamp integer)",
 
 	UPDATE_PASSWORD: "UPDATE user SET password = ? WHERE email = ?",
-	REMOVE_ACCOUNT: "DELETE FROM user WHERE email = ? AND name = ?",
+	REMOVE_ACCOUNT: "DELETE FROM user WHERE email = ?",
 	REMOVE_ACCOUNT_TWEETS: "DELETE FROM tweets WHERE email = ?"
 };
 
