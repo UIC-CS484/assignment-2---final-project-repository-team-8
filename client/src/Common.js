@@ -9,7 +9,8 @@ const routes = {
 	REMOVE_ACCOUNT: "/account/remove",
 	SPOTIFY_AUTH: "/spotify/auth",
 	SPOTIFY_LOGIN: "/spotify/login",
-	SPOTIFY_LYRICS: "/spotify/lyrics"
+	SPOTIFY_LYRICS: "/spotify/lyrics",
+	SPOTIFY_TOP_ARTIST: "https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=8&offset=1"
 };
 
 const errors = {
@@ -29,7 +30,8 @@ const constants = {
 	NAME: "name",
 	TOKEN: "token",
 	SECRET: "Hello, world!",
-	EMPTY: ""
+	EMPTY: "", 
+	SPOTIFY_TOKEN: "Spotify Token"
 };
 
 module.exports.constants = constants;

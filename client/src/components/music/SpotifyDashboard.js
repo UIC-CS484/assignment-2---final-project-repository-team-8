@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react"
-import SpotifyAuth from './SpotifyAuth'
-import SpotifyPlayer from "./SpotifyPlayer"
-import SpotifyTrack from "./SpotifyTrack"
-import { Form } from "react-bootstrap"
-import SpotifyWebApi from "spotify-web-api-node"
+import { useState, useEffect } from "react";
+import SpotifyAuth from './SpotifyAuth';
+import SpotifyPlayer from "./SpotifyPlayer";
+import SpotifyTrack from "./SpotifyTrack";
+import { Form } from "react-bootstrap";
+import SpotifyWebApi from "spotify-web-api-node";
 import "../style/Home.scss";
 import NavBar from "../NavBar";
+import axios from "axios";
+import Plot from 'react-plotly.js';
 
-import axios from "axios"
 import { constants, errors, routes } from "../../Common";
 
 export default function SpotifyDashboard(body) {
@@ -17,13 +18,32 @@ export default function SpotifyDashboard(body) {
     const [searchResults, setSearchResults] = useState([])
     const [playingTrack, setPlayingTrack] = useState()
     const [lyrics, setLyrics] = useState("")
-    
-    const spotifyApi = new SpotifyWebApi({
-        clientId: process.env.SPOTIFY_API_ID,
-        clientSecret: process.env.SPOTIFY_API_SECRET
-    })
-    spotifyApi.setAccessToken(accessToken)
-    
+    const [topArtists, setTopArtists] = useState([]);
+
+    var spotifyApi = new SpotifyWebApi();
+    spotifyApi.setAccessToken(accessToken);
+
+	// Transform track data 
+	function PopularityByTrack(data){
+
+		let plotData = [];
+
+		let names = [];
+		let popularity = [];
+        let count = 1;
+
+		data.map(each => {
+			names.push("("+count+") "+each.name);
+			popularity.push(each.popularity);
+            count +=1;
+		})
+
+		plotData['names'] = names;
+		plotData['popularity'] = popularity;
+
+		return plotData;
+	}
+
     function chooseTrack(track) {
         setPlayingTrack(track)
         setSearch("")
@@ -32,21 +52,30 @@ export default function SpotifyDashboard(body) {
     
     useEffect(() => {
         if (!playingTrack) return
-
         axios.get(routes.SPOTIFY_LYRICS, {
             params: {
                 track: playingTrack.title,
                 artist: playingTrack.artist,
             },})
             .then(res => {
-                setLyrics(res.data.lyrics)
+                setLyrics(res.data.lyrics);
+        })
+        
+        axios.get(routes.SPOTIFY_TOP_ARTIST, {
+            'headers': {
+                'Authorization': 'Bearer ' + accessToken //
+            }
+            }).then((res) => {
+                setTopArtists(res.data.items);
+            }).catch((error) => {
+                console.error(error);
             })
     }, [playingTrack])
 
     useEffect(() => {
         if (!search) return setSearchResults([])
         if (!accessToken) return
-
+        spotifyApi.setAccessToken(accessToken);
         let cancel = false
         spotifyApi.searchTracks(search).then(res => {
             if (cancel) return
@@ -56,21 +85,16 @@ export default function SpotifyDashboard(body) {
                 (smallest, image) => {
                     if (image.height < smallest.height) return image
                     return smallest
-                },
-                track.album.images[0]
-                )
-
+                }, track.album.images[0])
                 return {
-                artist: track.artists[0].name,
-                title: track.name,
-                uri: track.uri,
-                albumUrl: smallestAlbumImage.url,
+                    artist: track.artists[0].name,
+                    title: track.name,
+                    uri: track.uri,
+                    albumUrl: smallestAlbumImage.url,
                 }
-            })
-        )
-    })
-
-    return () => (cancel = true)
+            }))
+        })
+        return () => (cancel = true)
     }, [search, accessToken])
 
     return (
@@ -99,6 +123,63 @@ export default function SpotifyDashboard(body) {
                 </div>
             )}
         </div>
+        <br />
+        
+        <div>
+			<Plot 
+				data={[
+					{
+						type: 'bar',
+						x: PopularityByTrack(topArtists)['names'],
+						y: PopularityByTrack(topArtists)['popularity'],
+						marker: {color:'#00000'}
+					}
+				]}
+				layout={{
+					width: 500, 
+					height: 600, 
+					title: 'Your top 8 Artists',
+					title: '<b>Your top 8 Artists</b>',
+					margin:{
+						l: 40,
+						r: 40,
+						t: 90,
+                        b: 100
+					},
+					paper_bgcolor: '#cfe0fc',
+					plot_bgcolor: '#cfe0fc',
+					font: {
+						family: 'Newsreader, serif',
+						size: 20,
+						color: '#236B8E'
+					},
+					xaxis: {
+						showticklabels: true,
+						tickfont:{
+							family: 'Arial, sans-serif',
+							size: 12,
+							color: '#236B8E'
+						}
+					},
+					yaxis: {
+						title: 'Popularity of Artist',
+						titlefont: {
+							family: 'Arial, sans-serif',
+							size: 12,
+							color: '#236B8E'
+						},
+						showticklabels: true,
+						tickfont: {
+							family: 'Arial, sans-serif',
+							size: 12,
+							color: '#236B8E'
+						}
+					},
+					hovermode: 'closest'
+				}}
+			/>
+		</div>
+        <p><center> Select a song to look at data</center></p>
     </div>
     )
 }
