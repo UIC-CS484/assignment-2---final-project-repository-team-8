@@ -73,7 +73,7 @@ export default function Weather() {
                 errorMessage={error}
                 data={data}
                 lang="en"
-                unitsLabels={{ temperature: 'F', windSpeed: 'Km/h' }}
+                unitsLabels={{ temperature: 'C', windSpeed: 'Km/h' }}
                 showForecast
             />
             

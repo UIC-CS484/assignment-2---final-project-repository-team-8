@@ -60,16 +60,17 @@ export default function SpotifyDashboard(body) {
             .then(res => {
                 setLyrics(res.data.lyrics);
         })
-        
+        if(topArtists.length > 0 ) return;
         axios.get(routes.SPOTIFY_TOP_ARTIST, {
             'headers': {
                 'Authorization': 'Bearer ' + accessToken //
             }
             }).then((res) => {
+                console.log("inside table")
                 setTopArtists(res.data.items);
             }).catch((error) => {
                 console.error(error);
-            })
+        })
     }, [playingTrack])
 
     useEffect(() => {
