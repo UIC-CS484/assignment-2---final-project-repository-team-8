@@ -35,7 +35,7 @@ require("./passportConf")(passport);
 //Sending over the api key
 require("dotenv").config();
 
-// app.use(express.static(path.resolve(__dirname, "../client/build")));
+app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.listen(port, () => {
 	console.log("Server running on port " + port);
