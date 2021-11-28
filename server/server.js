@@ -13,9 +13,9 @@ const app = express();
 const saltRounds = 10;
 const port = process.env.NODE_ENV === "test" ? 8081 : 8080;
 const db = require("./database.js").db;
-const querystring = require('querystring');
-var SpotifyWebApi = require('spotify-web-api-node');
-const lyricsFinder = require("lyrics-finder")
+const querystring = require("querystring");
+var SpotifyWebApi = require("spotify-web-api-node");
+const lyricsFinder = require("lyrics-finder");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,7 +35,7 @@ require("./passportConf")(passport);
 //Sending over the api key
 require("dotenv").config();
 
-// app.use(express.static(path.resolve(__dirname, "../client/build")));
+app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.listen(port, () => {
 	console.log("Server running on port " + port);
@@ -156,8 +156,8 @@ app.get(routes.GET_ALL_TWEETS, async (req, res, next) => {
 
 app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 	passport.authenticate("local", (err, user, info) => {
-		console.log(user)
-		if(err){
+		console.log(user);
+		if (err) {
 			let status, msg;
 			switch (err) {
 				case errors.INCORRECT_PASSWORD:
@@ -173,7 +173,7 @@ app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 		} else if (!user) {
 			res.status(StatusCodes.NOT_FOUND).json({ error: messages.USER_NOT_FOUND });
 			return;
-		} else{
+		} else {
 			const [valid, error] = validPasswordFormat(req.body.newPassword);
 			if (!valid) {
 				console.log(error);
@@ -186,7 +186,7 @@ app.post(routes.UPDATE_PASSWORD, async (req, res, next) => {
 					res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: messages.REGISTRATION_FAILED });
 					return;
 				}
-		
+
 				const params = [hash, user.email];
 				db.run(query.UPDATE_PASSWORD, params, (dbErr, row) => {
 					if (dbErr) {
@@ -210,7 +210,7 @@ app.post(routes.REMOVE_ACCOUNT, async (req, res, next) => {
 			return;
 		}
 
-		if(err){
+		if (err) {
 			let status, msg;
 			switch (err) {
 				case errors.INCORRECT_PASSWORD:
@@ -228,7 +228,7 @@ app.post(routes.REMOVE_ACCOUNT, async (req, res, next) => {
 			return;
 		} else {
 			const params = [user.email];
-			
+
 			//Deleting user
 			db.run(query.REMOVE_ACCOUNT, params, (dbErr, row) => {
 				if (dbErr) {
@@ -271,27 +271,27 @@ var spotifyApi = new SpotifyWebApi({
 });
 
 app.get(routes.SPOTIFY_AUTH, function(req, res) {
-	var html = spotifyApi.createAuthorizeURL(scopes)
-	res.send(html+"&show_dialog=true")
+	var html = spotifyApi.createAuthorizeURL(scopes);
+	res.send(html + "&show_dialog=true");
 });
 
 app.post(routes.SPOTIFY_LOGIN, (req, res) => {
-	const code = req.body.code
+	const code = req.body.code;
 	spotifyApi.authorizationCodeGrant(code).then((data) => {
 		res.json({
-			accessToken : data.body.access_token,
-		}) 
+			accessToken: data.body.access_token
+		});
 	})
-	.catch((err) => {
-		console.log(err);
-		res.sendStatus(400)
-	})
-})
+		.catch((err) => {
+			console.log(err);
+			res.sendStatus(400);
+		});
+});
 
 app.get(routes.SPOTIFY_LYRICS, async (req, res) => {
-	const lyrics = (await lyricsFinder(req.query.artist, req.query.track)) || "No Lyrics Found"
-	res.json({ lyrics })
-})
+	const lyrics = (await lyricsFinder(req.query.artist, req.query.track)) || "No Lyrics Found";
+	res.json({ lyrics });
+});
 
 module.exports.app = app;
 module.exports.routes = routes;
